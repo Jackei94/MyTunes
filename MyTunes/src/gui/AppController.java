@@ -6,8 +6,13 @@ package gui;
  * and open the template in the editor.
  */
 
+import be.Songs;
+import dal.database.SongsDBDAO;
+import gui.model.SongModel;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,7 +61,7 @@ public class AppController implements Initializable
     @FXML
     private Button songToPlaylistMove;
     @FXML
-    private ListView<?> songs;
+    private ListView<Songs> songs;
     @FXML
     private Button songsNew;
     @FXML
@@ -66,15 +71,23 @@ public class AppController implements Initializable
     @FXML
     private Button close;
     
-    private void handleButtonAction(ActionEvent event)
-    {
-        
-    }
+    @FXML
+    private ListView<Songs> allSongs;
+    
+    private SongModel songModel;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
+        try
+        {
+            songModel = new SongModel();
+            songs.setItems(songModel.getAllSongs());
+        } catch (Exception ex)
+        {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
     
 }

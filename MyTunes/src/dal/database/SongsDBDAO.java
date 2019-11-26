@@ -7,6 +7,11 @@ package dal.database;
 
 import be.Songs;
 import dal.DalException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +29,25 @@ public class SongsDBDAO
    
     public List<Songs> getAllSongs() throws DalException
     {
-        
+        try (Connection con = dbCon.getConnection())
+        {
+            String sql = "SELECT * FROM Songs;";
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            ArrayList<Songs> allSongs = new ArrayList<>();
+            while (rs.next())
+            {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                double length = rs.getInt("length");
+                Songs song = new Songs(id, title, length);
+                allSongs.add(song);
+            }
+            return allSongs;
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new DalException(); 
+        }
     }
 }
