@@ -1,0 +1,4 @@
+user=CSe19A_10
+password=CSe19A_10
+database=MyTunes_2019_grp6
+server=10.176.111.31
