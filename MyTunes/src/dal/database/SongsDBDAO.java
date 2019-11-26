@@ -38,9 +38,11 @@ public class SongsDBDAO
             while (rs.next())
             {
                 int id = rs.getInt("id");
-                String title = rs.getString("title");
-                double length = rs.getInt("length");
-                Songs song = new Songs(id, title, length);
+                String songName = rs.getString("songName");
+                String songArtist = rs.getString("songArtist");
+                double time = rs.getInt("time");
+                String category = rs.getString("category");
+                Songs song = new Songs(id, songName, songArtist, time, category);
                 allSongs.add(song);
             }
             return allSongs;

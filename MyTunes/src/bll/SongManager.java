@@ -37,7 +37,7 @@ public class SongManager
 
         for (Songs songs : searchBase)
         {
-            if (songs.getTitle().toLowerCase().contains(query.toLowerCase()))
+            if (songs.getSongName().toLowerCase().contains(query.toLowerCase()))
             {
                 result.add(songs);
             }

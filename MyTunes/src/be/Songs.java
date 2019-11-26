@@ -12,45 +12,67 @@ package be;
 public class Songs
 {
    private int id;
-   private String title;
-   private double length;
+   private String songArtist;
+   private String songName;
+   private double time;
+   private String category;
 
-   public Songs(int id, String title, double length)
+   public Songs(int id, String songArtist, String songName, double time, String category)
    {
       this.id = id;
-      this.title = title;
-      this.length = length;
+      this.songArtist = songArtist;
+      this.songName = songName;
+      this.time = time;
+      this.category = category;
    }
 
-   public int getId()
-   {
-      return id;
-   }
+    public int getId()
+    {
+        return id;
+    }
 
-   public void setId(int id)
-   {
-      this.id = id;
-   }
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-   public String getTitle()
-   {
-      return title;
-   }
+    public String getSongArtist()
+    {
+        return songArtist;
+    }
 
-   public void setTitle(String title)
-   {
-      this.title = title;
-   }
+    public void setSongArtist(String songArtist)
+    {
+        this.songArtist = songArtist;
+    }
 
-   public double getLength()
-   {
-      return length;
-   }
+    public String getSongName()
+    {
+        return songName;
+    }
 
-   public void setLength(double length)
-   {
-      this.length = length;
-   }
-   
-   
+    public void setSongName(String songName)
+    {
+        this.songName = songName;
+    }
+
+    public double getTime()
+    {
+        return time;
+    }
+
+    public void setTime(double time)
+    {
+        this.time = time;
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
 }
