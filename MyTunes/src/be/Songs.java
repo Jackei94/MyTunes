@@ -12,16 +12,16 @@ package be;
 public class Songs
 {
    private int id;
-   private String songArtist;
    private String songName;
+   private String songArtist;
    private double time;
    private String category;
 
-   public Songs(int id, String songArtist, String songName, double time, String category)
+   public Songs(int id, String songName, String songArtist, double time, String category)
    {
       this.id = id;
-      this.songArtist = songArtist;
       this.songName = songName;
+      this.songArtist = songArtist;
       this.time = time;
       this.category = category;
    }
@@ -74,5 +74,11 @@ public class Songs
     public void setCategory(String category)
     {
         this.category = category;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return songName + " - " + songArtist + " - " + category + " - " + time;
     }
 }

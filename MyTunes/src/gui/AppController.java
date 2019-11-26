@@ -61,8 +61,6 @@ public class AppController implements Initializable
     @FXML
     private Button songToPlaylistMove;
     @FXML
-    private ListView<Songs> songs;
-    @FXML
     private Button songsNew;
     @FXML
     private Button songsEdit;
@@ -70,10 +68,9 @@ public class AppController implements Initializable
     private Button songsDelete;
     @FXML
     private Button close;
-    
     @FXML
     private ListView<Songs> allSongs;
-    
+    @FXML
     private SongModel songModel;
     
     
@@ -83,7 +80,7 @@ public class AppController implements Initializable
         try
         {
             songModel = new SongModel();
-            songs.setItems(songModel.getAllSongs());
+            allSongs.setItems(songModel.getAllSongs());
         } catch (Exception ex)
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);

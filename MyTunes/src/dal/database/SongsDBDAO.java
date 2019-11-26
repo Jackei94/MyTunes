@@ -7,6 +7,7 @@ package dal.database;
 
 import be.Songs;
 import dal.DalException;
+import dal.ISongsDao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Tramm
  */
-public class SongsDBDAO
+public class SongsDBDAO implements ISongsDao
 {
    private DatabaseConnector dbCon;
    
@@ -40,7 +41,7 @@ public class SongsDBDAO
                 int id = rs.getInt("id");
                 String songName = rs.getString("songName");
                 String songArtist = rs.getString("songArtist");
-                double time = rs.getInt("time");
+                double time = rs.getDouble("time");
                 String category = rs.getString("category");
                 Songs song = new Songs(id, songName, songArtist, time, category);
                 allSongs.add(song);
@@ -48,8 +49,54 @@ public class SongsDBDAO
             return allSongs;
         } catch (SQLException ex)
         {
-            ex.printStackTrace();
             throw new DalException(); 
         }
     }
+    
+    public static void main(String[] args) throws Exception
+    {
+        try
+        {
+        SongsDBDAO songsDao = new SongsDBDAO();
+
+        List<Songs> allSongs = songsDao.getAllSongs();
+        for (Songs allSong : allSongs)
+        {
+            System.out.println(allSong + " ID: " + allSong.getId());
+        }
+        System.out.println("Done done!!");
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+            throw new DalException();
+        }
+    }
+
+    @Override
+    public Songs createSongs(String title, double length) throws DalException
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteSongs(Songs songs) throws DalException
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateSongs(Songs songs) throws DalException
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void writeAllSongs(List<Songs> allSongs, String songName) throws DalException
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }
+
