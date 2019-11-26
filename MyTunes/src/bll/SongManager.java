@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dal;
+package bll;
 
 /**
  *
- * @author Tramm
+ * @author Jacob
  */
-public class SongsDBDAO
+public class SongManager
 {
-   
+    
 }
