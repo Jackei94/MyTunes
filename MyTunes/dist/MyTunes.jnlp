@@ -8,7 +8,11 @@
     <update check="always"/>
     <resources>
         <j2se version="9.0.4+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
         <jar href="MyTunes.jar" size="22701" download="eager"/>
+=======
+        <jar href="MyTunes.jar" size="23672" download="eager"/>
+>>>>>>> 6c5598f662496de0fe6bfd0c1443bc2808489c26
         <jar href="lib\mssql-jdbc-6.3.6-SNAPSHOT.jre9-preview.jar" size="876102" download="eager"/>
     </resources>
     <jfx:javafx-desc width="800" height="600" main-class="Main" name="Main"/>
