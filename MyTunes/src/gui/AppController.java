@@ -20,7 +20,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
 /**
@@ -69,14 +72,25 @@ public class AppController implements Initializable
     @FXML
     private Button close;
     @FXML
-    private ListView<Songs> allSongs;
+    private TableView<Songs> allSongs;
     @FXML
-    private SongModel songModel;
+    private TableColumn<Songs, String> songName;
+    @FXML
+    private TableColumn<Songs, String> songArtist;
+    @FXML
+    private TableColumn<Songs, String> category;
+    @FXML
+    private TableColumn<Songs, Double> time;
     
+    private SongModel songModel;
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        songName.setCellValueFactory(new PropertyValueFactory<Songs, String>("songName"));
+        songArtist.setCellValueFactory(new PropertyValueFactory<Songs, String>("songArtist"));
+        category.setCellValueFactory(new PropertyValueFactory<Songs, String>("category"));
+        time.setCellValueFactory(new PropertyValueFactory<Songs, Double>("time"));
         try
         {
             songModel = new SongModel();

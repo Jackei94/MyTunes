@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -110,7 +112,14 @@
             <VBox prefHeight="400.0" prefWidth="300.0">
                <children>
                   <Label text="Songs" />
-                  <ListView fx:id="allSongs" prefHeight="400.0" prefWidth="300.0" />
+                  <TableView fx:id="allSongs" prefHeight="400.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="songName" maxWidth="1.7976931348623157E308" prefWidth="99.0" text="Title" />
+                      <TableColumn fx:id="songArtist" maxWidth="1.7976931348623157E308" prefWidth="99.0" text="Artist" />
+                      <TableColumn fx:id="category" maxWidth="1.7976931348623157E308" prefWidth="60.0" text="Category" />
+                      <TableColumn fx:id="time" maxWidth="1.7976931348623157E308" prefWidth="40.0" text="Time" />
+                    </columns>
+                  </TableView>
                   <HBox prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="songsNew" mnemonicParsing="false" text="New...">

@@ -9,6 +9,7 @@ import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,30 +54,34 @@ public class SongsDBDAO implements ISongsDao
         }
     }
     
-    public static void main(String[] args) throws Exception
+    public Songs createSongs(String songName, String songArtist, double time, String category, String filePath) throws DalException
     {
-        try
+        try (Connection con = dbCon.getConnection())
         {
-        SongsDBDAO songsDao = new SongsDBDAO();
-
-        List<Songs> allSongs = songsDao.getAllSongs();
-        for (Songs allSong : allSongs)
+            String sql = "INSERT INTO Songs VALUES (?,?);";
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, songName);
+            ps.setString(2, songArtist);
+            ps.setDouble(3, time);
+            ps.setString(4, category);
+            ps.setString(5, filePath);
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 1)
+            {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next())
+                {
+                    int id = rs.getInt(1);
+                    Songs song = new Songs(id, songName, songArtist, time, category);
+                    return song;
+                }
+            }
+            throw new DalException();
+        } catch (SQLException ex)
         {
-            System.out.println(allSong + " ID: " + allSong.getId());
-        }
-        System.out.println("Done done!!");
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace();
+            ex.printStackTrace();
             throw new DalException();
         }
-    }
-
-    @Override
-    public Songs createSongs(String title, double length) throws DalException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -96,7 +101,6 @@ public class SongsDBDAO implements ISongsDao
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
     
 }
 

@@ -5,80 +5,59 @@
  */
 package be;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  *
  * @author Tramm
  */
 public class Songs
 {
-   private int id;
-   private String songName;
-   private String songArtist;
-   private double time;
-   private String category;
+   private final SimpleIntegerProperty id;
+   private final SimpleStringProperty songName;
+   private final SimpleStringProperty songArtist;
+   private final SimpleDoubleProperty time;
+   private final SimpleStringProperty category;
 
    public Songs(int id, String songName, String songArtist, double time, String category)
    {
-      this.id = id;
-      this.songName = songName;
-      this.songArtist = songArtist;
-      this.time = time;
-      this.category = category;
+      this.id = new SimpleIntegerProperty(id);
+      this.songName = new SimpleStringProperty(songName);
+      this.songArtist = new SimpleStringProperty(songArtist);
+      this.time = new SimpleDoubleProperty(time);
+      this.category = new SimpleStringProperty (category);
    }
 
     public int getId()
     {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
+        return id.get();
     }
 
     public String getSongArtist()
     {
-        return songArtist;
-    }
-
-    public void setSongArtist(String songArtist)
-    {
-        this.songArtist = songArtist;
+        return songArtist.get();
     }
 
     public String getSongName()
     {
-        return songName;
-    }
-
-    public void setSongName(String songName)
-    {
-        this.songName = songName;
+        return songName.get();
     }
 
     public double getTime()
     {
-        return time;
-    }
-
-    public void setTime(double time)
-    {
-        this.time = time;
+        return time.get();
     }
 
     public String getCategory()
     {
-        return category;
-    }
-
-    public void setCategory(String category)
-    {
-        this.category = category;
+        return category.get();
     }
     
-    @Override
-    public String toString()
-    {
-        return songName + " - " + songArtist + " - " + category + " - " + time;
-    }
+//    @Override
+//    public String toString()
+//    {
+//        return songName + " - " + songArtist + " - " + category + " - " + time;
+//    }
 }
