@@ -9,6 +9,7 @@ import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,12 +22,22 @@ import java.util.List;
  */
 public class SongsDBDAO implements ISongsDao
 {
+   /**
+    * Connects to the database
+    */
+   
    private DatabaseConnector dbCon;
    
    public SongsDBDAO() throws Exception
-   {
+           
+           
+   { 
        dbCon = new DatabaseConnector();
    }
+   /**
+    * 
+    * Fetch all songs from the database 
+    */
    
     public List<Songs> getAllSongs() throws DalException
     {
@@ -72,17 +83,38 @@ public class SongsDBDAO implements ISongsDao
             throw new DalException();
         }
     }
+    
+    
 
     @Override
     public Songs createSongs(String title, double length) throws DalException
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+/**
+ * Deletes a song from the database
+ * @param songs
+ * @throws DalException 
+ */
     @Override
     public void deleteSongs(Songs songs) throws DalException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection con = dbCon.getConnection())
+        {
+            int id = songs.getId();
+            String sql = "DELETE FROM movie WHERE id=?;";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows != 1)
+            {
+                throw new DalException();
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new DalException();
+        }
     }
 
     @Override
