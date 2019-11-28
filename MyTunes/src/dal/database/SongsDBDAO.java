@@ -59,7 +59,8 @@ public class SongsDBDAO implements ISongsDao
                 String songArtist = rs.getString("songArtist");
                 double time = rs.getDouble("time");
                 String category = rs.getString("category");
-                Songs song = new Songs(id, songName, songArtist, time, category);
+                String filePath = rs.getString("filePath");
+                Songs song = new Songs(id, songName, songArtist, time, category, filePath);
                 allSongs.add(song);
             }
             return allSongs;
@@ -73,7 +74,7 @@ public class SongsDBDAO implements ISongsDao
     {
         try (Connection con = dbCon.getConnection())
         {
-            String sql = "INSERT INTO Songs VALUES (?,?);";
+            String sql = "INSERT INTO Songs VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, songName);
             ps.setString(2, songArtist);
@@ -87,7 +88,7 @@ public class SongsDBDAO implements ISongsDao
                 if (rs.next())
                 {
                     int id = rs.getInt(1);
-                    Songs song = new Songs(id, songName, songArtist, time, category);
+                    Songs song = new Songs(id, songName, songArtist, time, category, filePath);
                     return song;
                 }
             }

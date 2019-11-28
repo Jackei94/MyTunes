@@ -20,15 +20,23 @@ public class Songs
    private final SimpleStringProperty songArtist;
    private final SimpleDoubleProperty time;
    private final SimpleStringProperty category;
+   private final SimpleStringProperty filePath;
+   
 
-   public Songs(int id, String songName, String songArtist, double time, String category)
+   public Songs(int id, String songName, String songArtist, double time, String category, String filePath)
    {
       this.id = new SimpleIntegerProperty(id);
       this.songName = new SimpleStringProperty(songName);
       this.songArtist = new SimpleStringProperty(songArtist);
       this.time = new SimpleDoubleProperty(time);
       this.category = new SimpleStringProperty (category);
+      this.filePath = new SimpleStringProperty (filePath);
    }
+
+    public String getFilePath()
+    {
+        return filePath.get();
+    }
 
     public int getId()
     {

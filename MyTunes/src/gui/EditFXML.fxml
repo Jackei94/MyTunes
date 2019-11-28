@@ -14,7 +14,7 @@
       <TextField layoutX="142.0" layoutY="246.0" />
       <TextField layoutX="142.0" layoutY="284.0" />
       <Button layoutX="332.0" layoutY="284.0" mnemonicParsing="false" text="Choose..." />
-      <Button fx:id="editCancel" layoutX="389.0" layoutY="334.0" mnemonicParsing="false" onAction="#editCancelbutton" text="Cancel" />
+      <Button fx:id="editCancel" layoutX="389.0" layoutY="334.0" mnemonicParsing="false" text="Cancel" />
       <Button layoutX="458.0" layoutY="334.0" mnemonicParsing="false" text="Save" />
       <Label layoutX="58.0" layoutY="57.0" text="Titlel" />
       <Label layoutX="58.0" layoutY="116.0" text="Artist" />
