@@ -29,7 +29,6 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Button fx:id="newPlayButton" mnemonicParsing="false" text="Button" />
                   <ImageView fx:id="playbutton" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/playbutton.png" />
@@ -136,7 +135,7 @@
                         <Button fx:id="songsDelete" mnemonicParsing="false" text="Delete" />
                         <HBox alignment="TOP_CENTER" prefHeight="100.0">
                            <children>
-                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="Close">
+                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#testPlayMedia" text="Close">
                                  <HBox.margin>
                                     <Insets left="92.0" />
                                  </HBox.margin>
