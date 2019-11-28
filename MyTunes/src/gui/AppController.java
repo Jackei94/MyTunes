@@ -9,19 +9,25 @@ package gui;
 import be.Songs;
 import dal.database.SongsDBDAO;
 import gui.model.SongModel;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 /**
  *
@@ -72,6 +78,21 @@ public class AppController implements Initializable
     private ListView<Songs> allSongs;
     @FXML
     private SongModel songModel;
+    
+    @FXML
+      public void buttonclicked(ActionEvent event) throws IOException //This method loads a new scene in a current window
+{
+    //note that on this line you can substitue "Screen2.fxml" for a string chosen prior to this line.
+    Parent loader = FXMLLoader.load(getClass().getResource("EditFXML.fxml"));//Creates a Parent called loader and assign it as ScReen2.FXML
+
+    Scene scene = new Scene(loader); //This creates a new scene called scene and assigns it as the Sample.FXML document which was named "loader"
+
+    Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //this accesses the window.
+
+    app_stage.setScene(scene); //This sets the scene as scene
+
+    app_stage.show(); // this shows the scene
+}
     
     
     @Override

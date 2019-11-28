@@ -113,7 +113,7 @@
                   <ListView fx:id="allSongs" prefHeight="400.0" prefWidth="300.0" />
                   <HBox prefHeight="50.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="songsNew" mnemonicParsing="false" text="New...">
+                        <Button fx:id="songsNew" mnemonicParsing="false" onAction="#buttonclicked" text="New...">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>

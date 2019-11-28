@@ -9,17 +9,26 @@ package bll;
  *
  * @author Tramm
  */
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import java.io.FileInputStream;
+
+import javazoom.jl.player.Player;
 
 public class MediaPlayer {
-    public static void main(String[] args) {
-        new JFXPanel();//Required to initialize JavaFX or I get this exception: Exception in thread "Thread-0" java.lang.IllegalStateException: Toolkit not initialized
-        String fileLocation = "bensound-dubstep_1.mp3";
-        System.out.println(fileLocation);
-        Media hit = new Media(fileLocation);
-        MediaPlayer mediaPlayer = new MediaPlayer(hit);
-        mediaPlayer.play();
-    }
+   public static void main(String[] args)
+   {
+      
+   }
+      public MediaPlayer(){
+
+        try{
+
+             FileInputStream fis = new FileInputStream("bensound-dubstep_1");
+             Player playMP3 = new Player(fis);
+
+             playMP3.play();
+
+        }  catch(Exception e){
+             System.out.println(e);
+           }
+    } 
 }
