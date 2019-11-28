@@ -17,8 +17,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
+
 
 /**
  *
@@ -136,16 +137,11 @@ public class SongsDBDAO implements ISongsDao
     
     public static void playSong(String filepath) throws DalException
     {
-        	
-		try {
-			FileInputStream fileInputStream = new FileInputStream("Song1.mp3");
-			Player player = new Player(fileInputStream);
-			System.out.println("Song is playing...");
-			player.play();
-		} catch (FileNotFoundException | JavaLayerException e) {
+         
+		
          
 
-		}
+        
      
       
 
