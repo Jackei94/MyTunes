@@ -5,9 +5,7 @@ package gui;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import be.Songs;
-import dal.database.SongsDBDAO;
 import gui.model.SongModel;
 import java.io.IOException;
 import java.net.URL;
@@ -30,6 +28,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 /**
@@ -88,8 +88,7 @@ public class AppController implements Initializable
     @FXML
     private TableColumn<Songs, Double> time;
     
-
-    @FXML
+        
       public void buttonclicked(ActionEvent event) throws IOException //This method loads a new scene in a current window
 {
     //note that on this line you can substitue "Screen2.fxml" for a string chosen prior to this line.
@@ -106,6 +105,7 @@ public class AppController implements Initializable
     
 
     private SongModel songModel;
+    private MediaPlayer mediaPlay;
 
     
     @Override
@@ -124,5 +124,14 @@ public class AppController implements Initializable
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+
+    @FXML
+    private void testPlayMedia(ActionEvent event)
+    {
+        String bip = "file:/C:/Users/renej/Documents/GitHub/MyTunes/MyTunes/music/song1.mp3";
+        Media hit = new Media(bip);
+        mediaPlay = new MediaPlayer(hit);
+        mediaPlay.play();
+    }
     
 }
