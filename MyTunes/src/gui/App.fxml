@@ -21,7 +21,7 @@
          <children>
             <HBox prefHeight="50.0" prefWidth="120.0">
                <children>
-                  <ImageView fx:id="reversebutton" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="reversebutton" fitHeight="40.0" fitWidth="40.0" onMousePressed="#mousePressedPrevious" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/reversebutton.png" />
                      </image>
@@ -29,12 +29,12 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="playbutton" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="playbutton" fitHeight="40.0" fitWidth="40.0" onMousePressed="#mousePressedPlay" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/playbutton.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="forwardbutton" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                  <ImageView fx:id="forwardbutton" fitHeight="40.0" fitWidth="40.0" onMousePressed="#mousePressedNext" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                      <image>
                         <Image url="@img/reversebutton.png" />
                      </image>
@@ -135,7 +135,7 @@
                         <Button fx:id="songsDelete" mnemonicParsing="false" text="Delete" />
                         <HBox alignment="TOP_CENTER" prefHeight="100.0">
                            <children>
-                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#testPlayMedia" text="Close">
+                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="Close">
                                  <HBox.margin>
                                     <Insets left="92.0" />
                                  </HBox.margin>
