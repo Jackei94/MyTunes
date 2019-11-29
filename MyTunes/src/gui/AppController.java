@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -38,7 +39,7 @@ import javafx.stage.Stage;
  */
 public class AppController implements Initializable
 {
-    
+
     @FXML
     private TextField search;
     @FXML
@@ -109,7 +110,7 @@ public class AppController implements Initializable
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
 
         Scene scene = new Scene(loader);
-
+        
         Stage stage = new Stage();
 
         stage.setScene(scene);
@@ -131,10 +132,9 @@ public class AppController implements Initializable
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
 
-    @FXML
-    private void testPlayMedia(ActionEvent event)
+    public void mousePressedPlay()
     {
         String bip = "file:/C:/Users/Jacob/Documents/GitHub/MyTunes/MyTunes/Music/Song1.mp3";
         Media hit = new Media(bip);
@@ -142,9 +142,14 @@ public class AppController implements Initializable
         mediaPlay.play();
     }
 
-    @FXML
-    private void buttonclicked(ActionEvent event)
+    public void mousePressedNext()
     {
+        
+    }
+
+    public void mousePressedPrevious()
+    {
+        
     }
     
 }
