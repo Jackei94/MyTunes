@@ -29,7 +29,7 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="playbutton" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#testPlayMedia" onMousePressed="#testPlayMedia" onMouseReleased="#testPlayMedia" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="playbutton" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#mousePressedPlay" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/playbutton.png" />
                      </image>

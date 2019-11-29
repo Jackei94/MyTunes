@@ -93,6 +93,7 @@ public class AppController implements Initializable
     private MediaPlayer mediaPlay;
     
         
+    @FXML
     public void songsEditButton(ActionEvent event) throws IOException
     {
         Parent loader = FXMLLoader.load(getClass().getResource("SongsEdit.fxml"));
@@ -105,6 +106,7 @@ public class AppController implements Initializable
         stage.show();
     }
     
+    @FXML
     public void songsNewButton(ActionEvent event) throws IOException
     {
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
@@ -134,6 +136,7 @@ public class AppController implements Initializable
         }
     }
 
+    @FXML
     public void mousePressedPlay()
     {
         String bip = "file:/C:/Users/Jacob/Documents/GitHub/MyTunes/MyTunes/Music/Song1.mp3";
@@ -142,11 +145,13 @@ public class AppController implements Initializable
         mediaPlay.play();
     }
 
+    @FXML
     public void mousePressedNext()
     {
         
     }
 
+    @FXML
     public void mousePressedPrevious()
     {
         
