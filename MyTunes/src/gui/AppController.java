@@ -88,25 +88,33 @@ public class AppController implements Initializable
     @FXML
     private TableColumn<Songs, Double> time;
     
-        
-      public void buttonclicked(ActionEvent event) throws IOException //This method loads a new scene in a current window
-{
-    //note that on this line you can substitue "Screen2.fxml" for a string chosen prior to this line.
-    Parent loader = FXMLLoader.load(getClass().getResource("EditFXML.fxml"));//Creates a Parent called loader and assign it as ScReen2.FXML
-
-    Scene scene = new Scene(loader); //This creates a new scene called scene and assigns it as the Sample.FXML document which was named "loader"
-
-    Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); //this accesses the window.
-
-    app_stage.setScene(scene); //This sets the scene as scene
-
-    app_stage.show(); // this shows the scene
-}
-    
-
     private SongModel songModel;
     private MediaPlayer mediaPlay;
+    
+        
+    public void songsEditButton(ActionEvent event) throws IOException
+    {
+        Parent loader = FXMLLoader.load(getClass().getResource("SongsEdit.fxml"));
 
+        Scene scene = new Scene(loader);
+
+        Stage stage = new Stage();
+
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    public void songsNewButton(ActionEvent event) throws IOException
+    {
+        Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
+
+        Scene scene = new Scene(loader);
+
+        Stage stage = new Stage();
+
+        stage.setScene(scene);
+        stage.show();
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -128,10 +136,15 @@ public class AppController implements Initializable
     @FXML
     private void testPlayMedia(ActionEvent event)
     {
-        String bip = "file:/C:/Users/renej/Documents/GitHub/MyTunes/MyTunes/music/song1.mp3";
+        String bip = "file:/C:/Users/Jacob/Documents/GitHub/MyTunes/MyTunes/Music/Song1.mp3";
         Media hit = new Media(bip);
         mediaPlay = new MediaPlayer(hit);
         mediaPlay.play();
+    }
+
+    @FXML
+    private void buttonclicked(ActionEvent event)
+    {
     }
     
 }
