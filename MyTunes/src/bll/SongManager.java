@@ -9,8 +9,12 @@ import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
 import dal.database.SongsDBDAO;
+import gui.SongsNewController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  *
@@ -28,6 +32,18 @@ public class SongManager
     public List<Songs> getAllSongs() throws DalException
     {
         return songsDao.getAllSongs();
+    }
+    
+    public Songs createSongs(String songName, String songArtist, double time, String category, String filePath) throws BLLException
+    {
+        try
+        {
+            return songsDao.createSongs(songName, songArtist, time, category, filePath);
+        } catch (DalException ex)
+        {
+            Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
+            throw new BLLException("Could not create movie.");
+        }
     }
 
     public List<Songs> search(String query) throws DalException

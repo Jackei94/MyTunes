@@ -6,6 +6,7 @@
 package gui.model;
 
 import be.Songs;
+import bll.BLLException;
 import bll.SongManager;
 import dal.DalException;
 import java.io.IOException;
@@ -32,6 +33,12 @@ public class SongModel
     public ObservableList<Songs> getAllSongs()
     {
         return allSongs;
+    }
+    
+    public void createSongs(String songName, String songArtist, double time, String category, String filePath) throws BLLException
+    {
+        Songs songs = songManager.createSongs(songName, songArtist, time, category, filePath);
+        allSongs.add(songs);
     }
 
     public void search(String query) throws IOException, DalException
