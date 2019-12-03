@@ -60,5 +60,10 @@ public class SongManager
         }
         return result;
     }
+
+    public void add(Songs songs)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

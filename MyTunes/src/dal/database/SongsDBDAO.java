@@ -8,8 +8,8 @@ package dal.database;
 import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.Media;
 
 
 /**
@@ -46,26 +44,27 @@ public class SongsDBDAO implements ISongsDao
    
     public List<Songs> getAllSongs() throws DalException
     {
+        ArrayList<Songs> allSongs = new ArrayList<>();
         try (Connection con = dbCon.getConnection())
         {
             String sql = "SELECT * FROM Songs;";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
-            ArrayList<Songs> allSongs = new ArrayList<>();
             while (rs.next())
             {
-                int id = rs.getInt("id");
-                String songName = rs.getString("songName");
-                String songArtist = rs.getString("songArtist");
-                double time = rs.getDouble("time");
-                String category = rs.getString("category");
-                String filePath = rs.getString("filePath");
-                Songs song = new Songs(id, songName, songArtist, time, category, filePath);
+                Songs song = new Songs();
+                song.setId(rs.getInt("id"));
+                song.setSongName(rs.getString("songName"));
+                song.setSongArtist(rs.getString("songArtist"));
+                song.setCategory(rs.getString("category"));
+                song.setFilePath(rs.getString("filePath"));
+                song.setTime(rs.getDouble("time"));
+                
                 allSongs.add(song);
             }
             return allSongs;
         } catch (SQLException ex)
-        {
+        {   Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DalException(); 
         }
     }
@@ -74,7 +73,7 @@ public class SongsDBDAO implements ISongsDao
     {
         try (Connection con = dbCon.getConnection())
         {
-            String sql = "INSERT INTO Songs VALUES (?,?,?,?,?);";
+            String sql = "INSERT INTO Songs (songName, songArtist, time, category, filePath) VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, songName);
             ps.setString(2, songArtist);
@@ -88,7 +87,7 @@ public class SongsDBDAO implements ISongsDao
                 if (rs.next())
                 {
                     int id = rs.getInt(1);
-                    Songs song = new Songs(id, songName, songArtist, time, category, filePath);
+                    Songs song = new Songs();
                     return song;
                 }
             }

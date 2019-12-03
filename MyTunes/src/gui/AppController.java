@@ -6,6 +6,7 @@ package gui;
  * and open the template in the editor.
  */
 import be.Songs;
+import dal.DalException;
 import gui.model.SongModel;
 import java.io.File;
 import java.io.IOException;
@@ -94,18 +95,29 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        songName.setCellValueFactory(new PropertyValueFactory<Songs, String>("songName"));
-        songArtist.setCellValueFactory(new PropertyValueFactory<Songs, String>("songArtist"));
-        category.setCellValueFactory(new PropertyValueFactory<Songs, String>("category"));
-        time.setCellValueFactory(new PropertyValueFactory<Songs, Double>("time"));
         try {
-            songModel = new SongModel();
-            allSongs.setItems(songModel.getAllSongs());
+            songModel = SongModel.getInstance();
         } catch (Exception ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        // Sets the items on song table
+        allSongs.setItems(songModel.getAllSongs());;
+        // Sets all cells to their values fir song table
+        songName.setCellValueFactory(new PropertyValueFactory("songName"));
+        songArtist.setCellValueFactory(new PropertyValueFactory("songArtist"));
+        category.setCellValueFactory(new PropertyValueFactory("category"));
+        time.setCellValueFactory(new PropertyValueFactory("time"));
+        try
+        {
+            // Loads all songs
+            songModel.loadSongs();
+        } catch (DalException ex)
+        {
+            Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        FilteredList<Songs> filteredData = new FilteredList<>(songModel.getAllSongs(), p -> true);
+        /*FilteredList<Songs> filteredData = new FilteredList<>(songModel.getAllSongs(), p -> true);
 
         // 2. Set the filter Predicate whenever the filter changes.
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -136,7 +148,7 @@ public class AppController implements Initializable {
         sortedData.comparatorProperty().bind(allSongs.comparatorProperty());
 
         // 5. Add sorted (and filtered) data to the table.
-        allSongs.setItems(sortedData);
+        allSongs.setItems(sortedData);*/
     }
 
     @FXML
