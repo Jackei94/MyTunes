@@ -16,7 +16,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.AppController">
    <children>
-      <TextField fx:id="search" layoutX="626.0" layoutY="27.0" promptText="Search..." />
+      <TextField fx:id="txtSearch" layoutX="626.0" layoutY="27.0" onKeyPressed="#searchSong" promptText="Search..." />
       <VBox layoutX="47.0" layoutY="27.0" prefHeight="89.0" prefWidth="141.0">
          <children>
             <HBox prefHeight="50.0" prefWidth="120.0">

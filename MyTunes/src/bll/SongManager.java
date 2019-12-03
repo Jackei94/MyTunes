@@ -47,17 +47,36 @@ public class SongManager
         }
     }
 
-    public List<Songs> search(String query) throws DalException
-    {
-        List<Songs> searchBase = songsDao.getAllSongs();
-        List<Songs> result = new ArrayList<>();
-
-        for (Songs songs : searchBase)
-        {
-            if (songs.getSongName().toLowerCase().contains(query.toLowerCase()))
-            {
-                result.add(songs);
+//    public List<Songs> search(String query) throws DalException
+//    {
+//        List<Songs> searchBase = songsDao.getAllSongs();
+//        List<Songs> result = new ArrayList<>();
+//
+//        for (Songs songs : searchBase)
+//        {
+//            if (songs.getSongName().toLowerCase().contains(query.toLowerCase()))
+//            {
+//                result.add(songs);
+//            }
+//        }
+//        return result;
+//    }
+    
+    public ArrayList<Songs> search(List<Songs> songs, String searchQuery) {
+        ArrayList<Songs> result = new ArrayList<>();
+        
+        for (Songs song : songs) {
+            String songName = song.getSongName().trim().toLowerCase();
+            String songArtist = song.getSongArtist().trim().toLowerCase();
+            String category = song.getCategory().trim().toLowerCase();
+            
+            if(songName.contains(searchQuery.toLowerCase().trim())
+                    || songArtist.contains(searchQuery.toLowerCase().trim())
+                    || category.contains(searchQuery.toLowerCase().trim())
+                    && !result.contains(songs)) {
+                result.add(song);
             }
+            
         }
         return result;
     }

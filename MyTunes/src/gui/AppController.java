@@ -6,6 +6,7 @@ package gui;
  * and open the template in the editor.
  */
 import be.Songs;
+import bll.SongManager;
 import dal.DalException;
 import gui.model.SongModel;
 import java.io.File;
@@ -14,6 +15,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -92,6 +96,8 @@ public class AppController implements Initializable {
 
     private SongModel songModel;
     private MediaPlayer mediaPlay;
+    private final ObservableList<Songs> searchedSongs;
+    private final SongManager songManager;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -151,6 +157,11 @@ public class AppController implements Initializable {
         allSongs.setItems(sortedData);*/
     }
 
+    public AppController() throws Exception {
+        this.searchedSongs = FXCollections.observableArrayList();
+        this.songManager = new SongManager();
+    }
+    
     @FXML
     public void songsEditButton(ActionEvent event) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("SongsEdit.fxml"));
@@ -191,6 +202,14 @@ public class AppController implements Initializable {
     @FXML
     public void mousePressedPrevious() {
 
+    }
+    @FXML
+    private void searchSong() {
+        txtSearch.textProperty().addListener((observable, oldValue, newValue)
+        -> {
+        searchedSongs.setAll(songManager.search(songModel.getAllSongs(), newValue));
+        allSongs.setItems(searchedSongs);
+        });
     }
 
 }

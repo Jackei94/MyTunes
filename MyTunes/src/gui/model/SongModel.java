@@ -44,18 +44,18 @@ public class SongModel
         allSongs.add(songs);
     }
 
-    public void search(String query) throws IOException, DalException
-    {
-        if (query.isEmpty())
-        {
-            allSongs.clear();
-            allSongs.addAll(songManager.getAllSongs());
-        } else
-        {
-            allSongs.clear();
-            allSongs.addAll(songManager.search(query));
-        }
-    }
+//    public void search(String query) throws IOException, DalException
+//    {
+//        if (query.isEmpty())
+//        {
+//            allSongs.clear();
+//            allSongs.addAll(songManager.getAllSongs());
+//        } else
+//        {
+//            allSongs.clear();
+//            allSongs.addAll(songManager.search(query));
+//        }
+//    }
     
     public static SongModel getInstance() throws IOException, Exception
     {
