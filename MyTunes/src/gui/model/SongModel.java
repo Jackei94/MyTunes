@@ -6,12 +6,14 @@
 package gui.model;
 
 import be.Songs;
-import bll.BLLException;
 import bll.SongManager;
+import static com.oracle.nio.BufferSecrets.instance;
+import static com.sun.source.util.DocTrees.instance;
 import dal.DalException;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -19,8 +21,8 @@ import javafx.collections.ObservableList;
  */
 public class SongModel
 {
+    private static SongModel instance;
     private ObservableList<Songs> allSongs;
-
     private SongManager songManager;
 
     public SongModel() throws DalException, Exception 
@@ -35,9 +37,9 @@ public class SongModel
         return allSongs;
     }
     
-    public void createSongs(String songName, String songArtist, double time, String category, String filePath) throws BLLException
+    public void createSongs(Songs songs)
     {
-        Songs songs = songManager.createSongs(songName, songArtist, time, category, filePath);
+        songManager.add(songs);
         allSongs.add(songs);
     }
 
@@ -52,5 +54,19 @@ public class SongModel
             allSongs.clear();
             allSongs.addAll(songManager.search(query));
         }
+    }
+    
+    public static SongModel getInstance() throws IOException, Exception
+    {
+        if (instance == null)
+        {
+            instance = new SongModel();
+        }
+        return instance;
+    }
+    
+    public void loadSongs() throws DalException {
+        allSongs.clear();
+        allSongs.addAll(songManager.getAllSongs());
     }
 }

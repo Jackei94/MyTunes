@@ -5,6 +5,7 @@
  */
 package gui;
 
+import be.Songs;
 import bll.BLLException;
 import dal.DalException;
 import gui.model.SongModel;
@@ -64,17 +65,19 @@ public class SongsNewController implements Initializable
     }
     
     @FXML
-    private void newSaveButton(ActionEvent event) throws DalException, BLLException
+    private void newSaveButton(ActionEvent event) throws BLLException
     {
-        String songName = newTitle.getText().trim();
-        String songArtist = newArtist.getText().trim();
-        double time = Double.parseDouble(newTime.getText().trim());
-        String category = newCategory.getText().trim();
-        String filePath = newFile.getText().trim();
-        songModel.createSongs(songName, songArtist, time, category, filePath);
+        Songs song = new Songs();
+        song.setSongName(newTitle.getText().trim());
+        song.setSongArtist(newArtist.getText().trim());
+        song.setCategory(newCategory.getText().trim());
+        song.setFilePath(newFile.getText().trim());
+        song.setTime(Double.parseDouble(newTime.getText().trim()));
         
-//        Stage stage = (Stage) newSave.getScene().getWindow();
-//        stage.close();
+        songModel.createSongs(song);
+        
+        Stage stage = (Stage) newSave.getScene().getWindow();
+        stage.close();
     }
     
 }
