@@ -15,77 +15,57 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Songs
 {
-    public String songName;
-    public String songArtist;
-    public String category;
-    public String filePath;
-    public double time;
-    private int id;
+   private final SimpleIntegerProperty id;
+   private final SimpleStringProperty songName;
+   private final SimpleStringProperty songArtist;
+   private final SimpleDoubleProperty time;
+   private final SimpleStringProperty category;
+   private final SimpleStringProperty filePath;
+   
+
+   public Songs(int id, String songName, String songArtist, double time, String category, String filePath)
+   {
+      this.id = new SimpleIntegerProperty(id);
+      this.songName = new SimpleStringProperty(songName);
+      this.songArtist = new SimpleStringProperty(songArtist);
+      this.time = new SimpleDoubleProperty(time);
+      this.category = new SimpleStringProperty (category);
+      this.filePath = new SimpleStringProperty (filePath);
+   }
+
+    public String getFilePath()
+    {
+        return filePath.get();
+    }
 
     public int getId()
     {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-    
-    public String getSongName()
-    {
-        return songName;
-    }
-
-    public void setSongName(String songName)
-    {
-        this.songName = songName;
+        return id.get();
     }
 
     public String getSongArtist()
     {
-        return songArtist;
+        return songArtist.get();
     }
 
-    public void setSongArtist(String songArtist)
+    public String getSongName()
     {
-        this.songArtist = songArtist;
+        return songName.get();
+    }
+
+    public double getTime()
+    {
+        return time.get();
     }
 
     public String getCategory()
     {
-        return category;
-    }
-
-    public void setCategory(String category)
-    {
-        this.category = category;
-    }
-
-    public String getFilePath()
-    {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath)
-    {
-        this.filePath = filePath;
+        return category.get();
     }
     
-    public double getTime()
-    {
-        return time;
-    }
-
-    public void setTime(double time)
-    {
-        this.time = time;
-    }
-    
-    public String toString()
-    {
-        return "Song{" + "songName=" + songName + ", songArtist=" + songArtist + ", category=" + category + ", filePath=" + filePath + ", time=" + time + ", id=" + id + '}';
-    }
-    
-    
+//    @Override
+//    public String toString()
+//    {
+//        return songName + " - " + songArtist + " - " + category + " - " + time;
+//    }
 }
