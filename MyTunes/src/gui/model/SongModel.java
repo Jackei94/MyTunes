@@ -6,6 +6,7 @@
 package gui.model;
 
 import be.Songs;
+import bll.BLLException;
 import bll.SongManager;
 import static com.oracle.nio.BufferSecrets.instance;
 import static com.sun.source.util.DocTrees.instance;
@@ -38,10 +39,10 @@ public class SongModel
         return allSongs;
     }
     
-    public void createSongs(Songs songs) throws DalException
+    public void createSongs(Songs songs) throws DalException, BLLException
     {
-        songManager.add(songs);
-        allSongs.add(songs);
+        songManager.createSongs(songs);
+        loadSongs();
     }
 
 //    public void search(String query) throws IOException, DalException

@@ -58,7 +58,7 @@ public class SongsDBDAO implements ISongsDao
                 song.setSongArtist(rs.getString("songArtist"));
                 song.setCategory(rs.getString("category"));
                 song.setFilePath(rs.getString("filePath"));
-                song.setTime(rs.getDouble("time"));
+                song.setTime(rs.getInt("time"));
                 
                 allSongs.add(song);
             }
@@ -73,13 +73,15 @@ public class SongsDBDAO implements ISongsDao
     {
         try (Connection con = dbCon.getConnection())
         {
-            String sql = "INSERT INTO Songs" + "(songName, songArtist, time, category, filePath)" + "VALUES (?,?,?,?,?);";
+            String sql = "INSERT INTO Songs (songName, songArtist, time, category, filePath) VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            
             ps.setString(1, songs.getSongName());
             ps.setString(2, songs.getSongArtist());
-            ps.setString(3, songs.getCategory());
-            ps.setString(4, songs.getFilePath());
-            ps.setDouble(5, songs.getTime());
+            ps.setInt(3, songs.getTime());
+            ps.setString(4, songs.getCategory());
+            ps.setString(5, songs.getFilePath());
+            ps.executeUpdate();
             
             int affectedRows = ps.executeUpdate();
             if (affectedRows < 1)
@@ -153,11 +155,7 @@ public class SongsDBDAO implements ISongsDao
     
     }
 
-    @Override
-    public Songs createSongs(String songName, String songArtist, double time, String category, String filePath) throws DalException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 }
 
 

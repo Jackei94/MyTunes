@@ -34,7 +34,7 @@
                         <Image url="@img/playbutton.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="forwardbutton" fitHeight="40.0" fitWidth="40.0" onMousePressed="#mousePressedNext" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                  <ImageView fx:id="forwardbutton" fitHeight="40.0" fitWidth="40.0" onMouseClicked="#mousePressedNext" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                      <image>
                         <Image url="@img/reversebutton.png" />
                      </image>

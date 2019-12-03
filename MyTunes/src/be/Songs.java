@@ -19,7 +19,7 @@ public class Songs
     public String songArtist;
     public String category;
     public String filePath;
-    public double time;
+    public int time;
     private int id;
 
     public int getId()
@@ -72,12 +72,12 @@ public class Songs
         this.filePath = filePath;
     }
     
-    public double getTime()
+    public int getTime()
     {
         return time;
     }
 
-    public void setTime(double time)
+    public void setTime(int time)
     {
         this.time = time;
     }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface ISongsDao
 {
-    Songs createSongs(String songName, String songArtist, double time, String category, String filePath) throws DalException;
+    void createSongs(Songs songs) throws DalException;
     
     void deleteSongs(Songs songs) throws DalException;
 

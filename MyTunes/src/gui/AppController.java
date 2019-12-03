@@ -114,6 +114,7 @@ public class AppController implements Initializable {
         songArtist.setCellValueFactory(new PropertyValueFactory("songArtist"));
         category.setCellValueFactory(new PropertyValueFactory("category"));
         time.setCellValueFactory(new PropertyValueFactory("time"));
+        
         try
         {
             // Loads all songs
@@ -195,8 +196,9 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void mousePressedNext() {
-
+    public void mousePressedNext() throws DalException {
+      allSongs.refresh();
+      songModel.loadSongs();
     }
 
     @FXML

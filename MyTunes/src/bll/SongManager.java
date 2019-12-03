@@ -35,16 +35,9 @@ public class SongManager
         return songsDao.getAllSongs();
     }
     
-    public Songs createSongs(String songName, String songArtist, double time, String category, String filePath) throws BLLException
+    public void createSongs(Songs songs) throws BLLException, DalException
     {
-        try
-        {
-            return songsDao.createSongs(songName, songArtist, time, category, filePath);
-        } catch (DalException ex)
-        {
-            Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
-            throw new BLLException("Could not create movie.");
-        }
+        songsDao.createSongs(songs);
     }
 
 //    public List<Songs> search(String query) throws DalException
