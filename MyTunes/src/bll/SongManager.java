@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class SongManager
 {
+    SongsDBDAO songsDBDAO;
     private ISongsDao songsDao;
 
     public SongManager() throws Exception
@@ -61,9 +62,12 @@ public class SongManager
         return result;
     }
 
-    public void add(Songs songs)
+    public void add(Songs songs) throws DalException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        songsDBDAO.createSongs(songs);
     }
     
+    public void edit(Songs song) throws DalException {
+        songsDBDAO.updateSongs(song);
+    }
 }

@@ -10,6 +10,7 @@
    <children>
       <TextField fx:id="newTitle" layoutX="140.0" layoutY="60.0" />
       <TextField fx:id="newArtist" layoutX="140.0" layoutY="110.0" />
+      <TextField fx:id="newCategory" layoutX="140.0" layoutY="161.0" />
       <TextField fx:id="newTime" layoutX="140.0" layoutY="210.0" />
       <TextField fx:id="newFile" layoutX="140.0" layoutY="260.0" />
       <Button layoutX="300.0" layoutY="260.0" mnemonicParsing="false" text="Choose..." />
@@ -25,6 +26,5 @@
       <Label layoutX="50.0" layoutY="165.0" text="Category" />
       <Label layoutX="50.0" layoutY="215.0" text="Time" />
       <Label layoutX="50.0" layoutY="265.0" text="File" />
-      <TextField fx:id="newCategory" layoutX="140.0" layoutY="161.0" />
    </children>
 </AnchorPane>

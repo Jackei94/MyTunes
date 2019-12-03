@@ -6,9 +6,10 @@
 package gui;
 
 import be.Songs;
-import bll.BLLException;
 import dal.DalException;
 import gui.model.SongModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -17,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -53,9 +53,24 @@ public class SongsNewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        try {
+            songModel = SongModel.getInstance();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!songModel.getSelectedSong().isEmpty()) {
+        newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
+        newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
+        newCategory.setText(songModel.getSelectedSong().get(0).getCategory());
+        newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
+        newTime.setText(Double.toString(songModel.getSelectedSong().get(0).getTime()));
+        }
+
+    }    
 //        newCategory.setValue("Pop");
 //        newCategory.setItems(newCategoryList);
-    }    
+   
 
     @FXML
     private void newCancelButton(ActionEvent event)
@@ -65,17 +80,32 @@ public class SongsNewController implements Initializable
     }
     
     @FXML
-    private void newSaveButton(ActionEvent event) throws BLLException
+    private void newSaveButton(ActionEvent event) throws DalException
     {
-        Songs song = new Songs();
-        song.setSongName(newTitle.getText().trim());
-        song.setSongArtist(newArtist.getText().trim());
-        song.setCategory(newCategory.getText().trim());
-        song.setFilePath(newFile.getText().trim());
-        song.setTime(Double.parseDouble(newTime.getText().trim()));
-        
-        songModel.createSongs(song);
-        
+        if(!songModel.getSelectedSong().isEmpty())
+        {
+            Songs song = new Songs();
+            song.setSongName(newTitle.getText());
+            song.setSongArtist(newArtist.getText());
+            song.setCategory(newCategory.getText());
+            song.setFilePath(newFile.getText().trim());
+            song.setTime(Double.parseDouble(newTime.getText()));
+            song.setId(songModel.getSelectedSong().get(0).getId());
+            songModel.edit(song);
+            songModel.getSelectedSong().clear();
+        }
+        else
+        {
+            Songs song = new Songs();
+            song.setId(-1);
+            song.setSongName(newTitle.getText());
+            song.setSongArtist(newArtist.getText());
+            song.setCategory(newCategory.getText());
+            song.setFilePath(newFile.getText());
+            song.setTime(Double.parseDouble(newTime.getText()));
+
+            songModel.createSongs(song);
+        }
         Stage stage = (Stage) newSave.getScene().getWindow();
         stage.close();
     }

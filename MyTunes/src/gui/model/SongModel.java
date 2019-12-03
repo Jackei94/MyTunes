@@ -23,6 +23,7 @@ public class SongModel
 {
     private static SongModel instance;
     private ObservableList<Songs> allSongs;
+    private ObservableList<Songs> selectedSong;
     private SongManager songManager;
 
     public SongModel() throws DalException, Exception 
@@ -37,7 +38,7 @@ public class SongModel
         return allSongs;
     }
     
-    public void createSongs(Songs songs)
+    public void createSongs(Songs songs) throws DalException
     {
         songManager.add(songs);
         allSongs.add(songs);
@@ -68,5 +69,19 @@ public class SongModel
     public void loadSongs() throws DalException {
         allSongs.clear();
         allSongs.addAll(songManager.getAllSongs());
+    }
+
+    public ObservableList<Songs> getSelectedSong() 
+    {
+        return selectedSong;
+    }
+    
+    public void edit(Songs song) throws DalException 
+    {
+        songManager.edit(song);
+        allSongs.add(song);
+        allSongs.clear();
+        allSongs.addAll(songManager.getAllSongs());
+                
     }
 }

@@ -69,34 +69,31 @@ public class SongsDBDAO implements ISongsDao
         }
     }
     
-    public Songs createSongs(Songs songs) throws DalException
+    public void createSongs(Songs songs) throws DalException
     {
         try (Connection con = dbCon.getConnection())
         {
-            String sql = "INSERT INTO Songs (songName, songArtist, time, category, filePath) VALUES (?,?,?,?,?);";
+            String sql = "INSERT INTO Songs" + "(songName, songArtist, time, category, filePath)" + "VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, songs.getSongName());
             ps.setString(2, songs.getSongArtist());
-            ps.setDouble(3, songs.getTime());
-            ps.setString(4, songs.getCategory());
-            ps.setString(5, songs.getFilePath());
+            ps.setString(3, songs.getCategory());
+            ps.setString(4, songs.getFilePath());
+            ps.setDouble(5, songs.getTime());
+            
             int affectedRows = ps.executeUpdate();
-            if (affectedRows == 1)
+            if (affectedRows < 1)
+                throw new SQLException("Can't save song");
+            
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next())
             {
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next())
-                {
-                    int id = rs.getInt(1);
-                    Songs song = new Songs();
-                    return song;
-                }
+               songs.setId(rs.getInt(1));
             }
-            throw new DalException();
-        } catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new DalException();
-        }
+        } 
+        catch (SQLException ex){
+            Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
     public void deleteSongs(Songs songs) throws DalException
@@ -104,7 +101,7 @@ public class SongsDBDAO implements ISongsDao
         try (Connection con = dbCon.getConnection())
         {
             int id = songs.getId();
-            String sql = "DELETE FROM movie WHERE id=?;";
+            String sql = "DELETE FROM Songs WHERE id=?;";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             int affectedRows = ps.executeUpdate();
@@ -120,9 +117,29 @@ public class SongsDBDAO implements ISongsDao
     }
 
     @Override
-    public void updateSongs(Songs songs) throws DalException
+    public void updateSongs(Songs song) throws DalException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection con = dbCon.getConnection()) {
+            String sql
+                    = "UPDATE Songs SET "
+                    +"songName=?, songArtist=?, category=?, filePath=?, time=? "
+                    +"WHERE id=?";
+            PreparedStatement ps
+                    = con.prepareStatement(sql);
+            ps.setString(1, song.getSongName());
+            ps.setString(2, song.getSongArtist());
+            ps.setString(3, song.getCategory());
+            ps.setString(4, song.getFilePath());
+            ps.setDouble(5, song.getTime());
+            ps.setInt(6, song.getId());
+            
+            int affected = ps.executeUpdate();
+            if (affected<1)
+                throw new SQLException("Can't edit song");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
