@@ -9,60 +9,77 @@ import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
 import dal.database.SongsDBDAO;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
  * @author Jacob
  */
-public class SongManager
-{
+public class SongManager {
+
+    private MediaPlayer mediaPlay;
     private ISongsDao songsDao;
 
-    public SongManager() throws Exception
-    {
+    public SongManager() throws Exception {
         songsDao = (ISongsDao) new SongsDBDAO();
     }
 
-    public List<Songs> getAllSongs() throws DalException
-    {
+    public List<Songs> getAllSongs() throws DalException {
         return songsDao.getAllSongs();
     }
-    
-    public void createSongs(Songs songs) throws BLLException, DalException
-    {
+
+    public void createSongs(Songs songs) throws BLLException, DalException {
         songsDao.createSongs(songs);
     }
-   
+
     public ArrayList<Songs> search(List<Songs> songs, String searchQuery) {
         ArrayList<Songs> result = new ArrayList<>();
-        
+
         for (Songs song : songs) {
             String songName = song.getSongName().trim().toLowerCase();
             String songArtist = song.getSongArtist().trim().toLowerCase();
             String category = song.getCategory().trim().toLowerCase();
-            
-            if(songName.contains(searchQuery.toLowerCase().trim())
+
+            if (songName.contains(searchQuery.toLowerCase().trim())
                     || songArtist.contains(searchQuery.toLowerCase().trim())
                     || category.contains(searchQuery.toLowerCase().trim())
                     && !result.contains(songs)) {
                 result.add(song);
             }
-            
+
         }
         return result;
     }
 
-   
-    public void edit(Songs songs) throws DalException 
-    {
+    public void edit(Songs songs) throws DalException {
         songsDao.updateSongs(songs);
     }
-    
-    public void deleteSong(Songs selectedSongs) throws DalException
-    {
-       songsDao.deleteSongs(selectedSongs);
+
+    public void deleteSong(Songs selectedSongs) throws DalException {
+        songsDao.deleteSongs(selectedSongs);
     }
+
+//    public void PlaySong(Songs songPlay) {
+//            songPlay = songPlay;
+//            File soundFile = new File(songPlay.getPath());
+//            if (crntPath == null || !crntPath.equals(soundFile.getAbsolutePath())) {
+//                crntPath = soundFile.toString();
+//                Media me = new Media(soundFile.toURI().toString());
+//                if (mp != null) {
+//                    mp.dispose();
+//                }
+//                mp = new MediaPlayer(me);
+//            }
+//            mp.play();
+//            
+//        }
+    
+    public MediaPlayer getMediaPlay() {
+        return mediaPlay;
+    }
+
 }

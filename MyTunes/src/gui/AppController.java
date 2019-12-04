@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javafx.beans.binding.Bindings.length;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,18 +36,20 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  *
  * @author Jacob
  */
 public class AppController implements Initializable {
-
+    
     @FXML
     private TextField txtSearch;
     @FXML
@@ -95,11 +98,13 @@ public class AppController implements Initializable {
     private TableColumn<Songs, String> category;
     @FXML
     private TableColumn<Songs, Double> time;
-
+    
     private SongModel songModel;
     private MediaPlayer mediaPlay;
     private final ObservableList<Songs> searchedSongs;
     private final SongManager songManager;
+    
+    private final ToggleButton playButton = new ToggleButton("Play");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -108,7 +113,7 @@ public class AppController implements Initializable {
         } catch (Exception ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         // Sets the items on song table
         allSongs.setItems(songModel.getAllSongs());;
         // Sets all cells to their values fir song table
@@ -117,59 +122,51 @@ public class AppController implements Initializable {
         category.setCellValueFactory(new PropertyValueFactory("category"));
         time.setCellValueFactory(new PropertyValueFactory("time"));
         
-        try
-        {
+        try {
             // Loads all songs
             songModel.loadSongs();
-        } catch (DalException ex)
-        {
+        } catch (DalException ex) {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-       
+        
     }
-
+    
     public AppController() throws Exception {
         this.searchedSongs = FXCollections.observableArrayList();
         this.songManager = new SongManager();
     }
-
-
-@FXML
-private void exitApp(ActionEvent event) throws IOException{
     
-    Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
-            deleteAlert.setContentText("Er du helt sikker på det? ");
-            deleteAlert.showAndWait();
-            if (deleteAlert.getResult() == ButtonType.YES) 
-            {
+    @FXML
+    private void exitApp(ActionEvent event) throws IOException {
+        
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
+        deleteAlert.setContentText("Er du helt sikker på det? ");
+        deleteAlert.showAndWait();
+        if (deleteAlert.getResult() == ButtonType.YES) {
 // get a handle to the stage
-    Stage stage = (Stage) close.getScene().getWindow();
-    // do what you have to do
-    stage.close();
-                
-            } else {
-                deleteAlert.close();
-            }
-}
+            Stage stage = (Stage) close.getScene().getWindow();
+            // do what you have to do
+            stage.close();
             
-            
-            
+        } else {
+            deleteAlert.close();
+        }
+    }
+    
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
-
+        
         Scene scene = new Scene(loader);
-
+        
         Stage stage = new Stage();
-
+        
         stage.setScene(scene);
         stage.show();
     }
     
     @FXML
-    private void songsEditButton(ActionEvent event) throws IOException 
-    {
+    private void songsEditButton(ActionEvent event) throws IOException {
         Songs songs = allSongs.getSelectionModel().getSelectedItem();
         songModel.addSelectedSong(songs);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
@@ -177,40 +174,56 @@ private void exitApp(ActionEvent event) throws IOException{
         SongsNewController controller = fxmlLoader.getController();
         controller.setModel(songModel);
         Stage stage = new Stage();
-
+        
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
+    
     @FXML
     public void mousePressedPlay() {
-        Songs songs = allSongs.getSelectionModel().getSelectedItem();
-        String bip = new File(songs.getFilePath()).toURI().toString();
-        Media hit = new Media(bip);
-        mediaPlay = new MediaPlayer(hit);
-        mediaPlay.stop();
-        mediaPlay.play();
+        Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
+        Duration length = null;
+        if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
+            if (length != null){
+            mediaPlay.play();
+            mediaPlay.seek(length);
+            }
+            
+        }
+        else if (playButton.getText().equals("Play")) {
+            String bip = new File(songPlaying.getFilePath()).toURI().toString();
+            Media hit = new Media(bip);
+            mediaPlay = new MediaPlayer(hit);
+            mediaPlay.play();
+            playButton.setText("Pause");
+        } else if (!playButton.getText().equals("Play")) {
+            mediaPlay.pause();
+            length = mediaPlay.getCurrentTime();
+            playButton.setText("Play");
+        }
     }
-
+    
     @FXML
     public void mousePressedNext() throws DalException {
-      allSongs.refresh();
-      songModel.loadSongs();
+        allSongs.refresh();
+        songModel.loadSongs();
     }
-
+    
     @FXML
     public void mousePressedPrevious() {
-
+        
     }
+    
     @FXML
     private void searchSong() {
         txtSearch.textProperty().addListener((observable, oldValue, newValue)
-        -> {
-        searchedSongs.setAll(songManager.search(songModel.getAllSongs(), newValue));
-        allSongs.setItems(searchedSongs);
+                -> {
+            searchedSongs.setAll(songManager.search(songModel.getAllSongs(), newValue));
+            allSongs.setItems(searchedSongs);
         });
     }
- @FXML
+    
+    @FXML
     private void songDeleteButton(ActionEvent event) throws DalException {
         boolean isSongOnPlaylist = false;
         Songs selectedSong
@@ -224,17 +237,15 @@ private void exitApp(ActionEvent event) throws IOException{
 //              }
 //          }
 //        }
-        if(isSongOnPlaylist == true) {
-              Alert warningAlert = new Alert(Alert.AlertType.WARNING,"The song is part of a playlist. Remove the song from the playlist first");
-              warningAlert.showAndWait();
+        if (isSongOnPlaylist == true) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
+            warningAlert.showAndWait();
             
-        } else
-        {
+        } else {
             Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
             deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
             deleteAlert.showAndWait();
-            if (deleteAlert.getResult() == ButtonType.YES) 
-            {
+            if (deleteAlert.getResult() == ButtonType.YES) {
                 songModel.deleteSong(selectedSong);
             } else {
                 deleteAlert.close();
