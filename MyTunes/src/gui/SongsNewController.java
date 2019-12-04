@@ -34,7 +34,7 @@ import javafx.stage.Window;
 public class SongsNewController implements Initializable
 {
 
-    ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep");
+    ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit");
 
     @FXML
     private Button newCancel;

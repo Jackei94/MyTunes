@@ -184,9 +184,11 @@ private void exitApp(ActionEvent event) throws IOException{
 
     @FXML
     public void mousePressedPlay() {
-        String bip = new File("Music/Song1.mp3").toURI().toString();
+        Songs songs = allSongs.getSelectionModel().getSelectedItem();
+        String bip = new File(songs.getFilePath()).toURI().toString();
         Media hit = new Media(bip);
         mediaPlay = new MediaPlayer(hit);
+        mediaPlay.stop();
         mediaPlay.play();
     }
 
