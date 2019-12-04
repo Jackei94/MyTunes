@@ -126,12 +126,8 @@ public class SongsDBDAO implements ISongsDao
     public void updateSongs(Songs song) throws DalException
     {
         try (Connection con = dbCon.getConnection()) {
-            String sql
-                    = "UPDATE Songs SET "
-                    +"songName=?, songArtist=?, category=?, filePath=?, time=? "
-                    +"WHERE id=?";
-            PreparedStatement ps
-                    = con.prepareStatement(sql);
+            String sql = "UPDATE Songs SET songName=?, songArtist=?, category=?, filePath=?, time=? WHERE id=?;";
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, song.getSongName());
             ps.setString(2, song.getSongArtist());
             ps.setString(3, song.getCategory());

@@ -66,8 +66,7 @@ public class SongModel
         songManager.edit(song);
        // allSongs.add(song);
         allSongs.clear();
-       // allSongs.addAll(songManager.getAllSongs());
-                
+       // allSongs.addAll(songManager.getAllSongs());           
     }
     public void deleteSong(Songs selectedSong) {
         allSongs.remove(selectedSong);
