@@ -124,38 +124,7 @@ public class AppController implements Initializable {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        /*FilteredList<Songs> filteredData = new FilteredList<>(songModel.getAllSongs(), p -> true);
-
-        // 2. Set the filter Predicate whenever the filter changes.
-        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(Songs -> {
-                // If filter text is empty, display all persons.
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                // Compare first name and last name of every person with filter text.
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (songName.getCellData(Songs).toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches first name.
-                } else if (songArtist.getCellData(Songs).toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                } else if (category.getCellData(Songs).toLowerCase().contains(lowerCaseFilter)) {
-                    return true; // Filter matches last name.
-                }
-                return false; // Does not match.
-            });
-        });
-
-        // 3. Wrap the FilteredList in a SortedList. 
-        SortedList<Songs> sortedData = new SortedList<>(filteredData);
-
-        // 4. Bind the SortedList comparator to the TableView comparator.
-        sortedData.comparatorProperty().bind(allSongs.comparatorProperty());
-
-        // 5. Add sorted (and filtered) data to the table.
-        allSongs.setItems(sortedData);*/
+       
     }
 
     public AppController() throws Exception {

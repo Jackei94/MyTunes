@@ -46,12 +46,13 @@ public class SongsDBDAO implements ISongsDao
     {
         ArrayList<Songs> allSongs = new ArrayList<>();
         try (Connection con = dbCon.getConnection())
-        {
+        { // prepare statement
             String sql = "SELECT * FROM Songs;";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
-            {
+            { 
+      // Add all to a list
                 Songs song = new Songs();
                 song.setId(rs.getInt("id"));
                 song.setSongName(rs.getString("songName"));
@@ -62,27 +63,30 @@ public class SongsDBDAO implements ISongsDao
                 
                 allSongs.add(song);
             }
+            //Return
             return allSongs;
         } catch (SQLException ex)
         {   Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DalException(); 
         }
     }
-    
+    // Creates a new song in database
     public void createSongs(Songs songs) throws DalException
     {
+    // Connects to the database   
         try (Connection con = dbCon.getConnection())
-        {
+        {   
+            // SQL code
             String sql = "INSERT INTO Songs (songName, songArtist, time, category, filePath) VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            
+            // Sets the Strings
             ps.setString(1, songs.getSongName());
             ps.setString(2, songs.getSongArtist());
             ps.setInt(3, songs.getTime());
             ps.setString(4, songs.getCategory());
             ps.setString(5, songs.getFilePath());
-            ps.executeUpdate();
             
+            // Attempts to update the database
             int affectedRows = ps.executeUpdate();
             if (affectedRows < 1)
                 throw new SQLException("Can't save song");

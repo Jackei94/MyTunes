@@ -9,6 +9,7 @@ import be.Songs;
 import bll.BLLException;
 import dal.DalException;
 import gui.model.SongModel;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.URL;
@@ -20,7 +21,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -64,18 +67,6 @@ public class SongsNewController implements Initializable
          Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
       }
 
-//        try {
-//            songModel = SongModel.getInstance();
-//        } catch (Exception ex)
-//        {
-//            Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
-//        }        if(!songModel.getSelectedSong().isEmpty()) {
-//        newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
-//        newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
-//        newCategory.setText(songModel.getSelectedSong().get(0).getCategory());
-//        newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
-//        newTime.setText(Double.toString(songModel.getSelectedSong().get(0).getTime()));
-//        }
    }
 //        newCategory.setValue("Pop");
 //        newCategory.setItems(newCategoryList);
@@ -97,15 +88,15 @@ public class SongsNewController implements Initializable
 //            song.setSongArtist(newArtist.getText());
 //            song.setCategory(newCategory.getText());
 //            song.setFilePath(newFile.getText().trim());
-//            song.setTime(Double.parseDouble(newTime.getText()));
+//            song.setTime(Integer.parseInt(newTime.getText()));
 //            song.setId(songModel.getSelectedSong().get(0).getId());
 //            songModel.edit(song);
 //            songModel.getSelectedSong().clear();
 //        }
 //        else
-//        {
+        {
       Songs songs = new Songs();
-//            songs.setId(-1);
+      songs.setId(-1);
       songs.setSongName(newTitle.getText());
       songs.setSongArtist(newArtist.getText());
       songs.setTime(Integer.parseInt(newTime.getText()));
@@ -116,5 +107,7 @@ public class SongsNewController implements Initializable
       Stage stage = (Stage) newSave.getScene().getWindow();
       stage.close();
    }
-   
+ 
+
+   }
 }

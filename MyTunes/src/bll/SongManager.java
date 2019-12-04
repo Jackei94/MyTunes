@@ -9,9 +9,6 @@ import be.Songs;
 import dal.DalException;
 import dal.ISongsDao;
 import dal.database.SongsDBDAO;
-import gui.SongsNewController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,22 +36,7 @@ public class SongManager
     {
         songsDao.createSongs(songs);
     }
-
-//    public List<Songs> search(String query) throws DalException
-//    {
-//        List<Songs> searchBase = songsDao.getAllSongs();
-//        List<Songs> result = new ArrayList<>();
-//
-//        for (Songs songs : searchBase)
-//        {
-//            if (songs.getSongName().toLowerCase().contains(query.toLowerCase()))
-//            {
-//                result.add(songs);
-//            }
-//        }
-//        return result;
-//    }
-    
+   
     public ArrayList<Songs> search(List<Songs> songs, String searchQuery) {
         ArrayList<Songs> result = new ArrayList<>();
         
@@ -74,12 +56,13 @@ public class SongManager
         return result;
     }
 
-    public void add(Songs songs) throws DalException
-    {
-        songsDBDAO.createSongs(songs);
-    }
-    
+   
     public void edit(Songs song) throws DalException {
         songsDBDAO.updateSongs(song);
+    }
+    
+    public void deleteSong(Songs selectedSongs) throws DalException
+    {
+       songsDBDAO.deleteSongs(selectedSongs);
     }
 }

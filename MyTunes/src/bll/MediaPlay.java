@@ -10,13 +10,11 @@ package bll;
  * @author Tramm
  */
 
-import java.io.File;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 
 
-import javazoom.jl.player.Player;
 
 public class MediaPlay {
     

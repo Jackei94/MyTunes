@@ -8,13 +8,10 @@ package gui.model;
 import be.Songs;
 import bll.BLLException;
 import bll.SongManager;
-import static com.oracle.nio.BufferSecrets.instance;
-import static com.sun.source.util.DocTrees.instance;
 import dal.DalException;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -44,19 +41,6 @@ public class SongModel
         songManager.createSongs(songs);
         loadSongs();
     }
-
-//    public void search(String query) throws IOException, DalException
-//    {
-//        if (query.isEmpty())
-//        {
-//            allSongs.clear();
-//            allSongs.addAll(songManager.getAllSongs());
-//        } else
-//        {
-//            allSongs.clear();
-//            allSongs.addAll(songManager.search(query));
-//        }
-//    }
     
     public static SongModel getInstance() throws IOException, Exception
     {
@@ -80,9 +64,13 @@ public class SongModel
     public void edit(Songs song) throws DalException 
     {
         songManager.edit(song);
-        allSongs.add(song);
+       // allSongs.add(song);
         allSongs.clear();
-        allSongs.addAll(songManager.getAllSongs());
+       // allSongs.addAll(songManager.getAllSongs());
                 
+    }
+    public void deleteSong(Songs selectedSong) {
+        allSongs.remove(selectedSong);
+        this.selectedSong.remove(selectedSong);
     }
 }
