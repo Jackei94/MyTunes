@@ -132,7 +132,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="songsDelete" mnemonicParsing="false" text="Delete" />
+                        <Button fx:id="songsDelete" mnemonicParsing="false" onAction="#songDeleteButton" text="Delete" />
                         <HBox alignment="TOP_CENTER" prefHeight="100.0">
                            <children>
                               <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="Close">

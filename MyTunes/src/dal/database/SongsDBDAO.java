@@ -102,14 +102,15 @@ public class SongsDBDAO implements ISongsDao
         } 
     }
     
-    public void deleteSongs(Songs songs) throws DalException
+    public void deleteSongs(Songs selectedSong) throws DalException
     {
         try (Connection con = dbCon.getConnection())
         {
-            int id = songs.getId();
+           
             String sql = "DELETE FROM Songs WHERE id=?;";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, selectedSong.getId());
+            ps.execute();
             int affectedRows = ps.executeUpdate();
             if (affectedRows != 1)
             {

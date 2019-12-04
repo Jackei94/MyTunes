@@ -26,7 +26,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -182,5 +184,36 @@ public class AppController implements Initializable {
         allSongs.setItems(searchedSongs);
         });
     }
-
+ @FXML
+    private void songDeleteButton(ActionEvent event) {
+        boolean isSongOnPlaylist = false;
+        Songs selectedSong
+                = allSongs.getSelectionModel().getSelectedItem();
+//        for (int i = 0; i < songModel.getPlaylists().size(); i++) {
+//            if(!songModel.getPlaylists().get(i).getSongList().isEmpty()) {
+//                for (int j = 0; j < songModel.getPlaylists().get(i).getSongList().size(); j++) {
+//                    if(selectedSong.getId() == songModel.getPlaylists().get(i).getSongList().get(j).getId()) {
+//                    isSongOnPlaylist = true;
+//                }
+//              }
+//          }
+//        }
+        if(isSongOnPlaylist == true) {
+              Alert warningAlert = new Alert(Alert.AlertType.WARNING,"The song is part of a playlist. Remove the song from the playlist first");
+              warningAlert.showAndWait();
+            
+        } else
+        {
+          Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
+          deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
+          deleteAlert.showAndWait();
+          if (deleteAlert.getResult() == ButtonType.YES) {
+              songModel.deleteSong(selectedSong);
+          } else {
+              deleteAlert.close();
+                 }
+            
+        }
+        
+    }
 }

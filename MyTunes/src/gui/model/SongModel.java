@@ -71,6 +71,7 @@ public class SongModel
     }
     public void deleteSong(Songs selectedSong) {
         allSongs.remove(selectedSong);
-        this.selectedSong.remove(selectedSong);
+        
     }
+    
 }
