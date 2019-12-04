@@ -188,7 +188,7 @@ public class AppController implements Initializable {
         });
     }
  @FXML
-    private void songDeleteButton(ActionEvent event) {
+    private void songDeleteButton(ActionEvent event) throws DalException {
         boolean isSongOnPlaylist = false;
         Songs selectedSong
                 = allSongs.getSelectionModel().getSelectedItem();
@@ -207,14 +207,15 @@ public class AppController implements Initializable {
             
         } else
         {
-          Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
-          deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
-          deleteAlert.showAndWait();
-          if (deleteAlert.getResult() == ButtonType.YES) {
-              songModel.deleteSong(selectedSong);
-          } else {
-              deleteAlert.close();
-                 }
+            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
+            deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
+            deleteAlert.showAndWait();
+            if (deleteAlert.getResult() == ButtonType.YES) 
+            {
+                songModel.deleteSong(selectedSong);
+            } else {
+                deleteAlert.close();
+            }
             
         }
         

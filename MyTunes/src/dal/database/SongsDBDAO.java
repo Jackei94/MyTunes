@@ -106,24 +106,15 @@ public class SongsDBDAO implements ISongsDao
     {
         try (Connection con = dbCon.getConnection())
         {
-           
             String sql = "DELETE FROM Songs WHERE id=?;";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, selectedSong.getId());
             ps.execute();
-            
-            {
-                throw new DalException();
-            }
-        } catch (SQLException ex){
-           Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-            throw new DalException();
         }
-        
-           
-            
-        
     }
 
     @Override

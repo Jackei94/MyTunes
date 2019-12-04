@@ -39,7 +39,6 @@ public class SongModel
     public void createSongs(Songs songs) throws DalException, BLLException
     {
         songManager.createSongs(songs);
-        loadSongs();
     }
     
     public static SongModel getInstance() throws IOException, Exception
@@ -74,9 +73,10 @@ public class SongModel
         allSongs.addAll(songManager.getAllSongs());           
     }
     
-    public void deleteSong(Songs selectedSong) {
+    public void deleteSong(Songs selectedSong) throws DalException 
+    {
+        songManager.deleteSong(selectedSong);
         allSongs.remove(selectedSong);
-        
     }
     
 }
