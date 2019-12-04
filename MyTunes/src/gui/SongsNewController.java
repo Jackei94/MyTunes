@@ -82,6 +82,7 @@ public class SongsNewController implements Initializable
     @FXML
     private void newCancelButton(ActionEvent event)
     {
+        songModel.getSelectedSong().clear();
         Stage stage = (Stage) newCancel.getScene().getWindow();
         stage.close();
     }
