@@ -134,6 +134,17 @@ public class AppController implements Initializable {
         this.songManager = new SongManager();
     }
 
+
+@FXML
+private void exitApp(ActionEvent event) throws IOException{
+    // get a handle to the stage
+    Stage stage = (Stage) close.getScene().getWindow();
+    // do what you have to do
+    stage.close();
+}
+            
+            
+            
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException {
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));

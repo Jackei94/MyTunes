@@ -135,7 +135,7 @@
                         <Button fx:id="songsDelete" mnemonicParsing="false" onAction="#songDeleteButton" text="Delete" />
                         <HBox alignment="TOP_CENTER" prefHeight="100.0">
                            <children>
-                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" text="Close">
+                              <Button fx:id="close" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#exitApp" text="Close">
                                  <HBox.margin>
                                     <Insets left="92.0" />
                                  </HBox.margin>
