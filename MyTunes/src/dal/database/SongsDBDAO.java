@@ -136,7 +136,7 @@ public class SongsDBDAO implements ISongsDao
             ps.setString(2, song.getSongArtist());
             ps.setString(3, song.getCategory());
             ps.setString(4, song.getFilePath());
-            ps.setDouble(5, song.getTime());
+            ps.setInt(5, song.getTime());
             ps.setInt(6, song.getId());
             
             int affected = ps.executeUpdate();

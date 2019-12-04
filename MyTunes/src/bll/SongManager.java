@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class SongManager
 {
-    SongsDBDAO songsDBDAO;
     private ISongsDao songsDao;
 
     public SongManager() throws Exception
@@ -57,12 +56,13 @@ public class SongManager
     }
 
    
-    public void edit(Songs song) throws DalException {
-        songsDBDAO.updateSongs(song);
+    public void edit(Songs songs) throws DalException 
+    {
+        songsDao.updateSongs(songs);
     }
     
     public void deleteSong(Songs selectedSongs) throws DalException
     {
-       songsDBDAO.deleteSongs(selectedSongs);
+       songsDao.deleteSongs(selectedSongs);
     }
 }

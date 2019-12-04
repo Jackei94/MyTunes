@@ -133,18 +133,6 @@ public class AppController implements Initializable {
         this.searchedSongs = FXCollections.observableArrayList();
         this.songManager = new SongManager();
     }
-    
-    @FXML
-    public void songsEditButton(ActionEvent event) throws IOException {
-        Parent loader = FXMLLoader.load(getClass().getResource("SongsEdit.fxml"));
-
-        Scene scene = new Scene(loader);
-
-        Stage stage = new Stage();
-
-        stage.setScene(scene);
-        stage.show();
-    }
 
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException {
@@ -155,6 +143,21 @@ public class AppController implements Initializable {
         Stage stage = new Stage();
 
         stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    private void songsEditButton(ActionEvent event) throws IOException 
+    {
+        Songs songs = allSongs.getSelectionModel().getSelectedItem();
+        songModel.addSelectedSong(songs);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        SongsNewController controller = fxmlLoader.getController();
+        controller.setModel(songModel);
+        Stage stage = new Stage();
+
+        stage.setScene(new Scene(root1));
         stage.show();
     }
 

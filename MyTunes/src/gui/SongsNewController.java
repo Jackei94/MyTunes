@@ -63,13 +63,19 @@ public class SongsNewController implements Initializable
         newCategory.setItems(newCategoryList);
         try
         {
-            songModel = new SongModel();
+            songModel = SongModel.getInstance();
         } 
         catch (Exception ex)
         {
             Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if(!songModel.getSelectedSong().isEmpty()) {
+        newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
+        newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
+        newCategory.setValue(songModel.getSelectedSong().get(0).getCategory());
+        newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
+        newTime.setText(Integer.toString(songModel.getSelectedSong().get(0).getTime()));
+        }
     }
         
 
@@ -83,19 +89,19 @@ public class SongsNewController implements Initializable
     @FXML
     private void newSaveButton(ActionEvent event) throws DalException, BLLException
     {
-//        if(!songModel.getSelectedSong().isEmpty())
-//        {
-//            Songs song = new Songs();
-//            song.setSongName(newTitle.getText());
-//            song.setSongArtist(newArtist.getText());
-//            song.setCategory((String) newCategory.getValue());
-//            song.setFilePath(newFile.getText().trim());
-//            song.setTime(Integer.parseInt(newTime.getText()));
-//            song.setId(songModel.getSelectedSong().get(0).getId());
-//            songModel.edit(song);
-//            songModel.getSelectedSong().clear();
-//        }
-//        else
+        if(!songModel.getSelectedSong().isEmpty())
+        {
+            Songs songs = new Songs();
+            songs.setSongName(newTitle.getText());
+            songs.setSongArtist(newArtist.getText());
+            songs.setCategory((String) newCategory.getValue());
+            songs.setFilePath(newFile.getText().trim());
+            songs.setTime(Integer.parseInt(newTime.getText()));
+            songs.setId(songModel.getSelectedSong().get(0).getId());
+            songModel.edit(songs);
+            songModel.getSelectedSong().clear();
+        }
+        else
         {
             Songs songs = new Songs();
             songs.setId(-1);
@@ -106,12 +112,15 @@ public class SongsNewController implements Initializable
             songs.setFilePath(newFile.getText());
 
             songModel.createSongs(songs);
-            
-            songModel.loadSongs();
-            
-            Stage stage = (Stage) newSave.getScene().getWindow();
-            stage.close();
         }
+        songModel.loadSongs();
+        Stage stage = (Stage) newSave.getScene().getWindow();
+        stage.close();
+    }
+    
+    public void setModel(SongModel model) 
+    {
+        this.songModel = model;
     }
     
 }

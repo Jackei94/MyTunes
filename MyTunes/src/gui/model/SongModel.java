@@ -26,9 +26,9 @@ public class SongModel
 
     public SongModel() throws DalException, Exception 
     {
-        songManager = new SongManager();
+        this.songManager = new SongManager();
         allSongs = FXCollections.observableArrayList();
-        allSongs.addAll(songManager.getAllSongs());
+        selectedSong = FXCollections.observableArrayList();
     }
 
     public ObservableList<Songs> getAllSongs()
@@ -61,13 +61,19 @@ public class SongModel
         return selectedSong;
     }
     
-    public void edit(Songs song) throws DalException 
+    public void addSelectedSong(Songs songs) 
     {
-        songManager.edit(song);
-       // allSongs.add(song);
-        allSongs.clear();
-       // allSongs.addAll(songManager.getAllSongs());           
+        selectedSong.add(songs);
     }
+    
+    public void edit(Songs songs) throws DalException 
+    {
+        songManager.edit(songs);
+        allSongs.add(songs);
+        allSongs.clear();
+        allSongs.addAll(songManager.getAllSongs());           
+    }
+    
     public void deleteSong(Songs selectedSong) {
         allSongs.remove(selectedSong);
         
