@@ -111,16 +111,19 @@ public class SongsDBDAO implements ISongsDao
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, selectedSong.getId());
             ps.execute();
-            int affectedRows = ps.executeUpdate();
-            if (affectedRows != 1)
+            
             {
                 throw new DalException();
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex){
+           Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
             throw new DalException();
         }
+        
+           
+            
+        
     }
 
     @Override
