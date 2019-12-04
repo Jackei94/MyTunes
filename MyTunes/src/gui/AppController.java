@@ -137,10 +137,20 @@ public class AppController implements Initializable {
 
 @FXML
 private void exitApp(ActionEvent event) throws IOException{
-    // get a handle to the stage
+    
+    Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
+            deleteAlert.setContentText("Er du helt sikker på det? ");
+            deleteAlert.showAndWait();
+            if (deleteAlert.getResult() == ButtonType.YES) 
+            {
+// get a handle to the stage
     Stage stage = (Stage) close.getScene().getWindow();
     // do what you have to do
     stage.close();
+                
+            } else {
+                deleteAlert.close();
+            }
 }
             
             
