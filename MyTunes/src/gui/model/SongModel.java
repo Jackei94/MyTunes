@@ -12,6 +12,8 @@ import dal.DalException;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Slider;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -79,4 +81,19 @@ public class SongModel
         allSongs.remove(selectedSong);
     }
     
+    public void PlaySong(Songs songPlay) {
+       songManager.PlaySong(songPlay);
+    }
+    
+    public void PauseSong(Songs songPlay) {
+       songManager.PauseSong(songPlay);
+    }
+
+    public void setVolume(Slider volumeSlider) {
+        songManager.setVolume(volumeSlider);
+    }
+    
+    public MediaPlayer getMediaPlayer() {
+        return songManager.getMediaPlay();
+    }
 }

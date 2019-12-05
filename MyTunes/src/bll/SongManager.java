@@ -12,8 +12,12 @@ import dal.database.SongsDBDAO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+
 
 /**
  *
@@ -63,21 +67,38 @@ public class SongManager {
         songsDao.deleteSongs(selectedSongs);
     }
 
-//    public void PlaySong(Songs songPlay) {
-//            songPlay = songPlay;
-//            File soundFile = new File(songPlay.getPath());
-//            if (crntPath == null || !crntPath.equals(soundFile.getAbsolutePath())) {
-//                crntPath = soundFile.toString();
-//                Media me = new Media(soundFile.toURI().toString());
-//                if (mp != null) {
-//                    mp.dispose();
-//                }
-//                mp = new MediaPlayer(me);
+    public void PlaySong(Songs songPlay) {
+        songPlay = songPlay;
+        String filePlay = new File(songPlay.getFilePath()).toURI().toString();
+        Media hit = new Media(filePlay);
+        mediaPlay = new MediaPlayer(hit);
+        mediaPlay.play();
+
+//        if (crntPath == null || !crntPath.equals(soundFile.getAbsolutePath())) {
+//            crntPath = soundFile.toString();
+//            Media me = new Media(soundFile.toURI().toString());
+//            if (mp != null) {
+//                mp.dispose();
 //            }
-//            mp.play();
-//            
+//            mp = new MediaPlayer(me);
 //        }
+//        mp.play();
+    }
     
+    public void PauseSong(Songs songPlay){
+        mediaPlay.pause();
+    }
+
+    public void setVolume(Slider volumeSlider) {
+        volumeSlider.setValue(mediaPlay.getVolume() * 100);
+        volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                mediaPlay.setVolume(volumeSlider.getValue() / 100);
+            }
+        });
+    }
+
     public MediaPlayer getMediaPlay() {
         return mediaPlay;
     }

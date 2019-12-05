@@ -44,7 +44,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Slider fx:id="volumeSlider" />
+            <Slider fx:id="volumeSlider" onDragDetected="#volumeSlide" />
          </children>
       </VBox>
       <Label fx:id="currentSong" layoutX="365.0" layoutY="63.0" text="..." />
