@@ -179,6 +179,7 @@ public class AppController implements Initializable {
         stage.show();
     }
     
+    
     @FXML
     public void mousePressedPlay() {
         Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
@@ -254,4 +255,18 @@ public class AppController implements Initializable {
         }
         
     }
+
+   @FXML
+   private void newPlaylist(ActionEvent event) throws IOException
+   {
+      Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
+        
+        Scene root2 = new Scene(loader);
+        
+        Stage stage = new Stage();
+        
+        stage.setScene(root2);
+        stage.show();
+   }
+   
 }

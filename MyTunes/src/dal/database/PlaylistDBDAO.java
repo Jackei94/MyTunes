@@ -93,9 +93,9 @@ public class PlaylistDBDAO
     public void edit(Playlist playlist) {
         try (Connection con = dbConnector.getConnection()) {
             String sql
-                    = "UPDATE playlist SET "
+                    = "UPDATE Playlist SET "
                     + "plName=?"
-                    + " WHERE playlistID=?";
+                    + " WHERE PlaylistID=?";
             PreparedStatement pstmt
                     = con.prepareStatement(sql);
             pstmt.setString(1, playlist.getName());
@@ -116,7 +116,7 @@ public class PlaylistDBDAO
     public void remove(Playlist selectedPlaylist) {
         try (Connection con = dbConnector.getConnection()) {
             String sql
-                    = "DELETE FROM playlist WHERE playlistID=?";
+                    = "DELETE FROM Playlist WHERE playlistID=?";
             PreparedStatement pstmt
                     = con.prepareStatement(sql);
             pstmt.setInt(1, selectedPlaylist.getID());
@@ -162,16 +162,16 @@ public class PlaylistDBDAO
         try (Connection con = dbConnector.getConnection()) {
             PreparedStatement pstmt
                     = con.prepareStatement("SELECT * FROM playlistSongs, song, playlist"
-                            + " WHERE playlistSongs.songID = song.songID AND playlistSongs.playlistID = playlist.playlistID");
+                            + " WHERE playlistSongs.songID = Songs.songID AND playlistSongs.playlistID = playlist.playlistID");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Playlist playlist = new Playlist();
                 Songs song = new Songs();
                 playlist.setID(rs.getInt("playlistID"));
-                song.setId(rs.getInt("songID"));
-                song.setSongName(rs.getString("name"));
-                song.setTime(rs.getInt("trackLenght"));
-                song.setFilePath(rs.getString("path"));
+                song.setId(rs.getInt("id"));
+                song.setSongName(rs.getString("songName"));
+                song.setTime(rs.getInt("time"));
+                song.setFilePath(rs.getString("filePath"));
                 
                 // Goes through the list of all playlists and if a id on the list is the same as one in database
                 // it will get the song list from that specific playlist and add the song that is on the database.
