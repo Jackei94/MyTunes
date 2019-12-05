@@ -184,7 +184,7 @@ public class AppController implements Initializable {
         Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
         Duration length = null;
         if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
-            if (length != null){
+            if (length == null){
             mediaPlay.play();
             mediaPlay.seek(length);
             }
