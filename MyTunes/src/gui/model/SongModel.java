@@ -10,6 +10,8 @@ import bll.BLLException;
 import bll.SongManager;
 import dal.DalException;
 import java.io.IOException;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -77,6 +79,22 @@ public class SongModel
     {
         songManager.deleteSong(selectedSong);
         allSongs.remove(selectedSong);
+    }
+    
+    private StringProperty newOrEdit = new SimpleStringProperty();
+
+    public StringProperty newOrEditProperty()
+    {
+        return newOrEdit;
+    }
+
+    public void setNewOrEdit(String newOrEdit)
+    {
+        newOrEditProperty().set(newOrEdit);
+    }
+    
+    public final String getNewOrEdit() {
+        return newOrEditProperty().get();
     }
     
 }

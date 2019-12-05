@@ -143,7 +143,7 @@ public class AppController implements Initializable {
         deleteAlert.setContentText("Er du helt sikker på det? ");
         deleteAlert.showAndWait();
         if (deleteAlert.getResult() == ButtonType.YES) {
-// get a handle to the stage
+            // get a handle to the stage
             Stage stage = (Stage) close.getScene().getWindow();
             // do what you have to do
             stage.close();
@@ -155,6 +155,9 @@ public class AppController implements Initializable {
     
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException {
+        this.songModel = songModel;
+        songModel.setNewOrEdit("New Song");
+        
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
         
         Scene scene = new Scene(loader);
@@ -167,6 +170,9 @@ public class AppController implements Initializable {
     
     @FXML
     private void songsEditButton(ActionEvent event) throws IOException {
+        this.songModel = songModel;
+        songModel.setNewOrEdit("Edit Song");
+        
         Songs songs = allSongs.getSelectionModel().getSelectedItem();
         songModel.addSelectedSong(songs);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
@@ -174,6 +180,7 @@ public class AppController implements Initializable {
         SongsNewController controller = fxmlLoader.getController();
         controller.setModel(songModel);
         Stage stage = new Stage();
+        songModel.getSelectedSong().clear();
         
         stage.setScene(new Scene(root1));
         stage.show();

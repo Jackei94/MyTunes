@@ -17,7 +17,7 @@
       <Button layoutX="300.0" layoutY="260.0" mnemonicParsing="false" text="Choose..." />
       <Button fx:id="newCancel" layoutX="390.0" layoutY="310.0" mnemonicParsing="false" onAction="#newCancelButton" text="Cancel" />
       <Button fx:id="newSave" layoutX="300.0" layoutY="310.0" mnemonicParsing="false" onAction="#newSaveButton" text="Save" />
-      <Label layoutX="140.0" layoutY="15.0" text="New Song">
+      <Label fx:id="newSong" layoutX="140.0" layoutY="15.0" text="Song...">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

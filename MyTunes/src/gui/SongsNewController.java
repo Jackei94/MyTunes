@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -50,17 +51,18 @@ public class SongsNewController implements Initializable
     private ChoiceBox newCategory;
     @FXML
     private TextField newFile;
-
+    @FXML
+    private Label newSong;
+    
+    
     private SongModel songModel;
-
+    
     /**
     * Initializes the controller class.
     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        newCategory.setValue("Pop");
-        newCategory.setItems(newCategoryList);
         try
         {
             songModel = SongModel.getInstance();
@@ -76,8 +78,13 @@ public class SongsNewController implements Initializable
         newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
         newTime.setText(Integer.toString(songModel.getSelectedSong().get(0).getTime()));
         }
-    }
+        newCategory.setValue("Pop");
+        newCategory.setItems(newCategoryList);
         
+        newSong.textProperty().unbind();
+        this.songModel = songModel;
+        newSong.textProperty().bind(songModel.newOrEditProperty());
+    }
 
     @FXML
     private void newCancelButton(ActionEvent event)
