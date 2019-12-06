@@ -26,17 +26,18 @@ import javafx.stage.Stage;
  */
 public class PlaylistNewController implements Initializable
 {
-private SongModel sm;
    @FXML
    private TextField txtPL;
    @FXML
    private Button saveBtnPL;
    @FXML
    private Button cancelBtnPL;
+   
+   private SongModel sm;
    /**
     * Initializes the controller class.
     */
-  @Override
+    @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         try {
@@ -44,9 +45,9 @@ private SongModel sm;
         } catch (IOException ex) {
             
         } catch (Exception ex) 
-   {
-      Logger.getLogger(PlaylistNewController.class.getName()).log(Level.SEVERE, null, ex);
-   }
+    {
+        Logger.getLogger(PlaylistNewController.class.getName()).log(Level.SEVERE, null, ex);
+    }
 //        if (!sm.getSelectedPlaylist().isEmpty()) {
   //          txtPL.setText(sm.getSelectedPlaylist().get(0).getName());
 //    }    
@@ -54,6 +55,7 @@ private SongModel sm;
     /*
     * Edit an existing playlist or saves a new one to the database
     */
+    @FXML
     private void savePlaylist(ActionEvent event)
     {
         if (!sm.getSelectedPlaylist().isEmpty()) { 
@@ -79,9 +81,10 @@ private SongModel sm;
     /*
     * Closes the playlistview
     */
+    @FXML
     private void cancelPlaylist(ActionEvent event)
     {
-        sm.getSelectedPlaylist().clear();
+        //sm.getSelectedPlaylist().clear();
         
         Stage stage = (Stage) cancelBtnPL.getScene().getWindow();
         stage.close();
