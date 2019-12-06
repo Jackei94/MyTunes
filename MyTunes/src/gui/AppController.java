@@ -151,7 +151,7 @@ public class AppController implements Initializable {
     public void songsNewButton(ActionEvent event) throws IOException {
         this.songModel = songModel;
         songModel.setNewOrEdit("New Song");
-        
+
         Parent loader = FXMLLoader.load(getClass().getResource("SongsNew.fxml"));
 
         Scene scene = new Scene(loader);
@@ -171,7 +171,7 @@ public class AppController implements Initializable {
     private void songsEditButton(ActionEvent event) throws IOException {
         this.songModel = songModel;
         songModel.setNewOrEdit("Edit Song");
-        
+
         Songs songs = allSongs.getSelectionModel().getSelectedItem();
         songModel.addSelectedSong(songs);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
@@ -180,7 +180,6 @@ public class AppController implements Initializable {
         controller.setModel(songModel);
         Stage stage = new Stage();
         songModel.getSelectedSong().clear();
-        
 
         stage.setScene(new Scene(root1));
         stage.show();
@@ -194,8 +193,7 @@ public class AppController implements Initializable {
             playButton.setText("Pause");
             currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
             songModel.getMediaPlayer().setVolume(currentVolume);
-            
-            
+
         } else if (playButton.getText().equals("Pause")) {
             songModel.PauseSong(songPlay);
             playButton.setText("Play");
@@ -224,13 +222,22 @@ public class AppController implements Initializable {
 
     @FXML
     public void mousePressedNext() throws DalException {
-        allSongs.refresh();
-        songModel.loadSongs();
+        songModel.getMediaPlayer().stop();
+        allSongs.getSelectionModel().selectNext();
+        Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
+        songModel.PlaySong(songPlay);
+        playButton.setText("Pause");
+        currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
     @FXML
     public void mousePressedPrevious() {
-
+        songModel.getMediaPlayer().stop();
+        allSongs.getSelectionModel().selectPrevious();
+        Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
+        songModel.PlaySong(songPlay);
+        playButton.setText("Pause");
+        currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
     @FXML
@@ -274,17 +281,15 @@ public class AppController implements Initializable {
 
     }
 
+    @FXML
+    private void newPlaylist(ActionEvent event) throws IOException {
+        Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
 
-   @FXML
-   private void newPlaylist(ActionEvent event) throws IOException
-   {
-      Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
-        
         Scene root2 = new Scene(loader);
-        
+
         Stage stage = new Stage();
-        
+
         stage.setScene(root2);
         stage.show();
-   }
+    }
 }
