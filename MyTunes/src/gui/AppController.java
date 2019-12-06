@@ -33,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -184,17 +185,21 @@ public class AppController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
+    
+    Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
+    Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
     @FXML
     public void mousePressedPlay() {
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
         if (playButton.getText().equals("Play")) {
+            playbutton.setImage(playImage);
             songModel.PlaySong(songPlay);
             playButton.setText("Pause");
             currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
             songModel.getMediaPlayer().setVolume(currentVolume);
 
         } else if (playButton.getText().equals("Pause")) {
+            playbutton.setImage(pauseImage);
             songModel.PauseSong(songPlay);
             playButton.setText("Play");
             songModel.setVolume(volumeSlider);
