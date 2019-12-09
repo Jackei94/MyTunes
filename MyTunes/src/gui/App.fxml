@@ -55,9 +55,9 @@
                   <Label text="Playlists" />
                   <TableView fx:id="playlists" prefHeight="400.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn fx:id="playlistsName" prefWidth="98.0" text="Name" />
-                      <TableColumn fx:id="playlistsSongs" prefWidth="50.0" text="Songs" />
-                        <TableColumn fx:id="playlistsTime" prefWidth="50.0" text="Time" />
+                      <TableColumn fx:id="playlistsName" maxWidth="1.7976931348623157E308" prefWidth="98.0" text="Name" />
+                      <TableColumn fx:id="playlistsSongs" maxWidth="1.7976931348623157E308" prefWidth="50.0" text="Songs" />
+                        <TableColumn fx:id="playlistsTime" maxWidth="1.7976931348623157E308" prefWidth="50.0" text="Time" />
                     </columns>
                   </TableView>
                   <HBox prefHeight="50.0" prefWidth="100.0">
