@@ -16,8 +16,8 @@ public class Playlist
 {
 
     
-    public String name;
-    private int id;
+    public String plName;
+    private int PlaylistId;
     private final List<Songs> songList;
     
     // Constructer for Playlist
@@ -30,8 +30,8 @@ public class Playlist
      *
      * @return the value of id
      */
-    public int getID() {
-        return id;
+    public int getPlaylistId() {
+        return PlaylistId;
     }
     
     /**
@@ -39,8 +39,8 @@ public class Playlist
      *
      * @param id new value of id
      */
-    public void setID(int id) {
-        this.id = id;
+    public void setPlaylistId(int PlaylistId) {
+        this.PlaylistId = PlaylistId;
     }
     
     /**
@@ -48,8 +48,8 @@ public class Playlist
      *
      * @return the value of name
      */
-    public String getName() {
-        return name;
+    public String getPlName() {
+        return plName;
     }
     
     /**
@@ -57,8 +57,8 @@ public class Playlist
      *
      * @param name new value of name
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setPlName(String plName) {
+        this.plName = plName;
     }
     
     /*
@@ -73,6 +73,6 @@ public class Playlist
      */
     @Override
     public String toString() {
-        return "Playlist{" + "name=" + name + ", id=" + id + '}';
+        return "Playlist{" + "name=" + plName + ", id=" + PlaylistId + '}';
     }
 }

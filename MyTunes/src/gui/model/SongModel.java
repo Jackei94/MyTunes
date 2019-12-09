@@ -23,8 +23,8 @@ import javafx.scene.media.MediaPlayer;
  *
  * @author Jacob
  */
-public class SongModel
-{
+public class SongModel {
+
     private static SongModel instance;
     private ObservableList<Songs> allSongs;
     private ObservableList<Songs> selectedSong;
@@ -32,184 +32,174 @@ public class SongModel
     public ObservableList<Playlist> playlistList;
     public ObservableList<Playlist> selectedPlaylist;
     public ObservableList<Playlist> playlists;
-     private boolean listEnded;
-     private PlaylistManager plm;
+    private boolean listEnded;
+    private PlaylistManager plManager;
 
-    public SongModel() throws DalException, Exception 
-    {
+    public SongModel() throws DalException, Exception {
         this.songManager = new SongManager();
         allSongs = FXCollections.observableArrayList();
         selectedSong = FXCollections.observableArrayList();
     }
 
-    public ObservableList<Songs> getAllSongs()
-    {
+    public ObservableList<Songs> getAllSongs() {
         return allSongs;
     }
-    
-    public void createSongs(Songs songs) throws DalException, BLLException
-    {
+
+    public void createSongs(Songs songs) throws DalException, BLLException {
         songManager.createSongs(songs);
     }
-    
-    public static SongModel getInstance() throws IOException, Exception
-    {
-        if (instance == null)
-        {
+
+    public static SongModel getInstance() throws IOException, Exception {
+        if (instance == null) {
             instance = new SongModel();
         }
         return instance;
     }
-    
+
     public void loadSongs() throws DalException {
         allSongs.clear();
         allSongs.addAll(songManager.getAllSongs());
     }
 
-    public ObservableList<Songs> getSelectedSong() 
-    {
+    public ObservableList<Songs> getSelectedSong() {
         return selectedSong;
     }
-    
-    public void addSelectedSong(Songs songs) 
-    {
+
+    public void addSelectedSong(Songs songs) {
         selectedSong.add(songs);
     }
-    
-    public void edit(Songs songs) throws DalException 
-    {
+
+    public void edit(Songs songs) throws DalException {
         songManager.edit(songs);
         allSongs.add(songs);
         allSongs.clear();
-        allSongs.addAll(songManager.getAllSongs());           
+        allSongs.addAll(songManager.getAllSongs());
     }
-    
-    public void deleteSong(Songs selectedSong) throws DalException 
-    {
+
+    public void deleteSong(Songs selectedSong) throws DalException {
         songManager.deleteSong(selectedSong);
         allSongs.remove(selectedSong);
     }
-   
-  /*
+
+    /*
    * Sends information of the playlist and adds it to a list
-   */
-   public void addPlaylist(Playlist playlist)
-   {
-       plm.add(playlist);
-       playlistList.add(playlist);
-   }
-     /*
+     */
+    public void addPlaylist(Playlist playlist) throws DalException {
+        plManager.createPlaylist(playlist);
+        playlistList.add(playlist);
+    }
+
+    /*
    * returns the list
-   */
-   public ObservableList<Playlist> getSelectedPlaylist() {
-       return selectedPlaylist;
-   }
- /*
+     */
+    public ObservableList<Playlist> getSelectedPlaylist() {
+        return selectedPlaylist;
+    }
+
+    /*
    * adds the selected playlist to a list
-   */
-   public void addSelectedPlaylist(Playlist playlist) {
-       selectedPlaylist.add(playlist);
-   }
-   
-   /*
+     */
+    public void addSelectedPlaylist(Playlist playlist) {
+        selectedPlaylist.add(playlist);
+    }
+
+    /*
    * gets all playlists
-   */
-   public ObservableList<Playlist> getPlaylists() {
-       return playlistList;
-   }
-/*
+     */
+    public ObservableList<Playlist> getPlaylists() {
+        return playlistList;
+    }
+
+    /*
    * clears the playlist list and adds all playlist from playlist manager
-   */
-   public void loadPlaylist() {
-       playlistList.clear();
-       playlistList.addAll(plm.getAllPlaylists());
-   }
-   
-   /*
+     */
+    public void loadPlaylist() throws DalException {
+        playlistList.clear();
+        playlistList.addAll(plManager.getAllPlaylists());
+    }
+
+    /*
    * Sends information on the selected playlist and adds it to the list
    * clears the list and adds all playlist for the view to be updated correct
-   */
-   public void edit(Playlist playlist) {
-       plm.edit(playlist);
-       playlistList.add(playlist);
-       playlistList.clear();
-       playlistList.addAll(plm.getAllPlaylists());
-   }
-   
-   /*
-   * Sends information of the selected playlist and removes it from the list
-   */
-   public void remove(Playlist selectedPlaylist) {
-       playlistList.remove(selectedPlaylist);
-       plm.remove(selectedPlaylist);
-   }
+     */
+    public void edit(Playlist playlist) throws DalException {
+        plManager.updatePlaylist(playlist);
+        playlistList.add(playlist);
+        playlistList.clear();
+        playlistList.addAll(plManager.getAllPlaylists());
+    }
 
-   /*
+    /*
+   * Sends information of the selected playlist and removes it from the list
+     */
+    public void remove(Playlist selectedPlaylist) throws DalException {
+        playlistList.remove(selectedPlaylist);
+        plManager.deletePlaylist(selectedPlaylist);
+    }
+
+    /*
    * Sends information of the selected playlist and song
-   */
+     */
     public void addSongToPlaylist(Playlist playlist, Songs songs) {
-        plm.addSongToPlaylist(playlist, songs);
+        plManager.addSongToPlaylist(playlist, songs);
     }
-    
+
     public void PlaySong(Songs songPlay) {
-       songManager.PlaySong(songPlay);
+        songManager.PlaySong(songPlay);
     }
-    
 
     private StringProperty newOrEdit = new SimpleStringProperty();
 
-    public StringProperty newOrEditProperty()
-    {
+    public StringProperty newOrEditProperty() {
         return newOrEdit;
     }
 
-    public void setNewOrEdit(String newOrEdit)
-    {
+    public void setNewOrEdit(String newOrEdit) {
         newOrEditProperty().set(newOrEdit);
     }
-    
+
     public final String getNewOrEdit() {
         return newOrEditProperty().get();
     }
-    
+
     public void PauseSong(Songs songPlay) {
-       songManager.PauseSong(songPlay);
+        songManager.PauseSong(songPlay);
     }
 
     public void setVolume(Slider volumeSlider) {
         songManager.setVolume(volumeSlider);
     }
-    
+
     public MediaPlayer getMediaPlayer() {
         return songManager.getMediaPlay();
     }
 
     /*
     * gets all songs from a playlist
-    */
+     */
     public void loadSongsInPlaylist() {
-        plm.getAllSongsFromPlaylist();
+        plManager.getAllSongsFromPlaylist();
     }
 
     /*
     * Sends information on selected song and playlist and removes the song
     * from that playlist
-    */
+     */
     public void removeSongPl(Songs selectedSong, Playlist selectedPlaylist) {
-        plm.removeSongPl(selectedSong, selectedPlaylist);
+        plManager.removeSongFromPlaylist(selectedSong, selectedPlaylist);
         playlistList.remove(selectedPlaylist.getSongList().remove(selectedSong));
     }
-    
-  /*
+
+    /*
     * returns list
-    */
+     */
     public boolean listEnded() {
         return listEnded;
     }
 
     /*
     * sees if list has ended
-    */
+     */
     public void setListEnded(boolean listEnded) {
         this.listEnded = listEnded;
     }

@@ -7,6 +7,7 @@ package gui;
  */
 import be.Songs;
 import bll.SongManager;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.DalException;
 import gui.model.SongModel;
 import java.io.IOException;
@@ -172,7 +173,6 @@ public class AppController implements Initializable {
     private void songsEditButton(ActionEvent event) throws IOException {
         this.songModel = songModel;
         songModel.setNewOrEdit("Edit Song");
-
         Songs songs = allSongs.getSelectionModel().getSelectedItem();
         songModel.addSelectedSong(songs);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
@@ -185,9 +185,10 @@ public class AppController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
-    
+
     Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
     Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
+
     @FXML
     public void mousePressedPlay() {
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
@@ -204,27 +205,56 @@ public class AppController implements Initializable {
             playButton.setText("Play");
             songModel.setVolume(volumeSlider);
         }
-
-        //        Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
-        //        Duration length = null;
-        //        if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
-        //            if (length == null){
-        //            mediaPlay.play();
-        //            
-        //            }
-        //            
-        //        }
-        //        else if (playButton.getText().equals("Play")) {
-        //            
-        //            mediaPlay.play();
-        //            playButton.setText("Pause");
-        //        } else if (!playButton.getText().equals("Play")) {
-        //            mediaPlay.pause();
-        //            length = mediaPlay.getCurrentTime();
-        //            playButton.setText("Play");
-        //        }
+        setOnEndMedia();
+    }
+    
+    public void setOnEndMedia() {
+        songModel.getMediaPlayer().setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                autoPlayNext();
+            }
+        });
+    }
+    
+    public void autoPlayNext() {
+        int listSongs = songModel.getAllSongs().size() - 1;
+        if (listSongs == allSongs.getSelectionModel().getSelectedIndex());
+        {
+            songModel.setListEnded(true);
+        }
+        allSongs.getSelectionModel().selectNext();
+        Songs songs = allSongs.getSelectionModel().getSelectedItem();
+        songModel.PlaySong(songs);
+        
     }
 
+//            int listSize = mvm.getSongs().size() -1;
+//            if(listSize == playlistSongs.getSelectionModel().getSelectedIndex()) {
+//                mvm.setListEnded(true);
+//             }
+//            playlistSongs.getSelectionModel().selectNext();
+//            Song song = playlistSongs.getSelectionModel().getSelectedItem();
+//            txtSongPlaying.setText("Current Song - " + playlistSongs.getSelectionModel().getSelectedItem().getName());
+//            mvm.PlaySong(song);
+    //        Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
+    //        Duration length = null;
+    //        if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
+    //            if (length == null){
+    //            mediaPlay.play();
+    //            
+    //            }
+    //            
+    //        }
+    //        else if (playButton.getText().equals("Play")) {
+    //            
+    //            mediaPlay.play();
+    //            playButton.setText("Pause");
+    //        } else if (!playButton.getText().equals("Play")) {
+    //            mediaPlay.pause();
+    //            length = mediaPlay.getCurrentTime();
+    //            playButton.setText("Play");
+    //        }
     @FXML
     public void mousePressedNext() throws DalException {
         songModel.getMediaPlayer().stop();
@@ -233,6 +263,7 @@ public class AppController implements Initializable {
         songModel.PlaySong(songPlay);
         playButton.setText("Pause");
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
+        songModel.setVolume(volumeSlider);
     }
 
     @FXML
@@ -243,6 +274,7 @@ public class AppController implements Initializable {
         songModel.PlaySong(songPlay);
         playButton.setText("Pause");
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
+
     }
 
     @FXML

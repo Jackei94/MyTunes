@@ -7,6 +7,8 @@ package bll;
 
 import be.Playlist;
 import be.Songs;
+import dal.DalException;
+import dal.IPlaylistDao;
 import dal.database.PlaylistDBDAO;
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class PlaylistManager
 {
-    PlaylistDBDAO pDBDAO;
+    private IPlaylistDao pDBDAO;
 
    /*
    * Constructor for PlaylistManager
@@ -29,7 +31,7 @@ public class PlaylistManager
     /*
     * Sends information of a new playlist
     */
-    public void add(Playlist playlist)
+    public void createPlaylist(Playlist playlist) throws DalException
     {
         pDBDAO.createPlaylist(playlist);
     }
@@ -37,22 +39,22 @@ public class PlaylistManager
     /*
     * returns all playlists
     */
-    public List<Playlist> getAllPlaylists() {
+    public List<Playlist> getAllPlaylists() throws DalException {
         return pDBDAO.getAllPlaylists();
     }
     
     /*
     * Sends information on which play list should be edited and to what
     */
-    public void edit(Playlist playlist) {
-        pDBDAO.edit(playlist);
+    public void updatePlaylist(Playlist playlist) throws DalException {
+        pDBDAO.updatePlaylist(playlist);
     }
     
     /*
     * Sends information on which playlist should be removed
     */
-    public void remove(Playlist selectedPlaylist) {
-        pDBDAO.remove(selectedPlaylist);
+    public void deletePlaylist(Playlist selectedPlaylist) throws DalException {
+        pDBDAO.deletePlaylist(selectedPlaylist);
     }
 
     /*
@@ -72,7 +74,7 @@ public class PlaylistManager
     /*
     * removes a song from a specific playlist
     */
-    public void removeSongPl(Songs selectedSong, Playlist selectedPlaylist) {
-        pDBDAO.removeSongPl(selectedSong, selectedPlaylist);
+    public void removeSongFromPlaylist(Songs selectedSong, Playlist selectedPlaylist) {
+        pDBDAO.removeSongFromPlaylist(selectedSong, selectedPlaylist);
     }
 }

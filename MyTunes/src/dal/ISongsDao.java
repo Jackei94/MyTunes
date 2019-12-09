@@ -21,6 +21,4 @@ public interface ISongsDao
     List<Songs> getAllSongs() throws DalException;
 
     void updateSongs(Songs songs) throws DalException;
-
-    void writeAllSongs(List<Songs> allSongs, String songName) throws DalException;
 }

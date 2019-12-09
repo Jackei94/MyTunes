@@ -6,6 +6,7 @@
 package gui;
 
 import be.Playlist;
+import dal.DalException;
 import gui.model.SongModel;
 import java.io.IOException;
 import java.net.URL;
@@ -24,77 +25,74 @@ import javafx.stage.Stage;
  *
  * @author Tramm
  */
-public class PlaylistNewController implements Initializable
-{
-   @FXML
-   private TextField txtPL;
-   @FXML
-   private Button saveBtnPL;
-   @FXML
-   private Button cancelBtnPL;
-   
-   private SongModel sm;
-   /**
-    * Initializes the controller class.
-    */
+public class PlaylistNewController implements Initializable {
+
+    @FXML
+    private TextField txtPL;
+    @FXML
+    private Button saveBtnPL;
+    @FXML
+    private Button cancelBtnPL;
+
+    private SongModel songModel;
+
+    /**
+     * Initializes the controller class.
+     */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         try {
-            sm = SongModel.getInstance();
+            songModel = SongModel.getInstance();
         } catch (IOException ex) {
-            
-        } catch (Exception ex) 
-    {
-        Logger.getLogger(PlaylistNewController.class.getName()).log(Level.SEVERE, null, ex);
-    }
+
+        } catch (Exception ex) {
+            Logger.getLogger(PlaylistNewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        if (!sm.getSelectedPlaylist().isEmpty()) {
-  //          txtPL.setText(sm.getSelectedPlaylist().get(0).getName());
+        //          txtPL.setText(sm.getSelectedPlaylist().get(0).getName());
 //    }    
     }
+
     /*
     * Edit an existing playlist or saves a new one to the database
-    */
+     */
     @FXML
-    private void savePlaylist(ActionEvent event)
-    {
-        if (!sm.getSelectedPlaylist().isEmpty()) { 
-            Playlist playlist = new Playlist();
-            playlist.setName(txtPL.getText());
-            playlist.setID(sm.getSelectedPlaylist().get(0).getID());
-            sm.edit(playlist);
-            sm.getSelectedPlaylist().clear();
-            sm.loadSongsInPlaylist();
-            
-        } else {
-            
-            Playlist playlist = new Playlist();
-            playlist.setName(txtPL.getText());
-            playlist.setID(-1);
-            
-            sm.addPlaylist(playlist);
-        }
+    private void savePlaylist(ActionEvent event) throws DalException {
+//        if (!sm.getSelectedPlaylist().isEmpty()) { 
+//            Playlist playlist = new Playlist();
+//            playlist.setName(txtPL.getText());
+//            playlist.setID(sm.getSelectedPlaylist().get(0).getID());
+//            sm.edit(playlist);
+//            sm.getSelectedPlaylist().clear();
+//            sm.loadSongsInPlaylist();
+//            
+//        } else {
+
+        Playlist playlist = new Playlist();
+         playlist.setPlaylistId(-1);
+        playlist.setPlName(txtPL.getText());
+       
+        songModel.addPlaylist(playlist);
         Stage stage = (Stage) saveBtnPL.getScene().getWindow();
         stage.close();
     }
 
     /*
     * Closes the playlistview
-    */
+     */
     @FXML
-    private void cancelPlaylist(ActionEvent event)
-    {
+    private void cancelPlaylist(ActionEvent event) {
         //sm.getSelectedPlaylist().clear();
-        
+
         Stage stage = (Stage) cancelBtnPL.getScene().getWindow();
         stage.close();
     }
-    
+
     /*
     * sets the model to MainViewModel
-    */
+     */
     public void setModel(SongModel model) {
-        this.sm = model;
+        this.songModel = model;
     }
-   
+
 }
