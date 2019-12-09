@@ -6,9 +6,9 @@
 package bll;
 
 import be.Playlist;
-import be.Songs;
+import dal.DalException;
+import dal.IPlaylistDao;
 import dal.database.PlaylistDBDAO;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,62 +17,25 @@ import java.util.List;
  */
 public class PlaylistManager
 {
-    PlaylistDBDAO pDBDAO;
-
-   /*
-   * Constructor for PlaylistManager
-   */
-    public PlaylistManager() throws IOException {
-        this.pDBDAO = new PlaylistDBDAO();
-    }
+    private IPlaylistDao playlistDao;
     
-    /*
-    * Sends information of a new playlist
-    */
-    public void add(Playlist playlist)
-    {
-        pDBDAO.createPlaylist(playlist);
-    }
-    
-    /*
-    * returns all playlists
-    */
-    public List<Playlist> getAllPlaylists() {
-        return pDBDAO.getAllPlaylists();
-    }
-    
-    /*
-    * Sends information on which play list should be edited and to what
-    */
-    public void edit(Playlist playlist) {
-        pDBDAO.edit(playlist);
-    }
-    
-    /*
-    * Sends information on which playlist should be removed
-    */
-    public void remove(Playlist selectedPlaylist) {
-        pDBDAO.remove(selectedPlaylist);
+    public PlaylistManager() throws Exception {
+        playlistDao = (IPlaylistDao) new PlaylistDBDAO();
     }
 
-    /*
-    * sends information on which playlist should the song be added to
-    */
-    public void addSongToPlaylist(Playlist playlist, Songs songs) {
-        pDBDAO.addSongToPlaylist(playlist, songs);
+    public List<Playlist> getAllPlaylists() throws DalException {
+        return playlistDao.getAllPlaylists();
     }
     
-    /*
-    * gets all songs from playlists
-    */
-    public void getAllSongsFromPlaylist() {
-        pDBDAO.getAllSongsFromPlaylist();
+    public void createPlaylist(Playlist playlist) throws BLLException, DalException {
+        playlistDao.createPlaylist(playlist);
     }
-
-    /*
-    * removes a song from a specific playlist
-    */
-    public void removeSongPl(Songs selectedSong, Playlist selectedPlaylist) {
-        pDBDAO.removeSongPl(selectedSong, selectedPlaylist);
+    
+    public void deletePlaylist(Playlist playlist) throws BLLException, DalException {
+        playlistDao.deletePlaylist(playlist);
+    }
+    
+    public void editPlaylist(Playlist playlist) throws DalException {
+        playlistDao.updatePlaylist(playlist);
     }
 }

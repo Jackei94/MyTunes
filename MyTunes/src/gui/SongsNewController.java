@@ -9,7 +9,6 @@ import be.Songs;
 import bll.BLLException;
 import dal.DalException;
 import gui.model.SongModel;
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.URL;
@@ -23,9 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -34,7 +31,6 @@ import javafx.stage.Window;
  */
 public class SongsNewController implements Initializable
 {
-
     ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit");
 
     @FXML

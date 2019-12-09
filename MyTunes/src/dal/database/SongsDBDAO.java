@@ -25,23 +25,20 @@ import java.util.List;
  */
 public class SongsDBDAO implements ISongsDao
 {
-   /**
+    /**
     * Connects to the database
     */
+    private DatabaseConnector dbCon;
    
-   private DatabaseConnector dbCon;
+    public SongsDBDAO() throws Exception       
+    { 
+        dbCon = new DatabaseConnector();
+    }
    
-   public SongsDBDAO() throws Exception
-           
-           
-   { 
-       dbCon = new DatabaseConnector();
-   }
-   /**
+    /**
     * 
     * Fetch all songs from the database 
     */
-   
     public List<Songs> getAllSongs() throws DalException
     {
         ArrayList<Songs> allSongs = new ArrayList<>();
@@ -137,12 +134,6 @@ public class SongsDBDAO implements ISongsDao
         } catch (SQLException ex) {
             Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void writeAllSongs(List<Songs> allSongs, String songName) throws DalException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public static void playSong(String filepath) throws DalException
