@@ -14,7 +14,7 @@
       <TextField fx:id="newArtist" layoutX="140.0" layoutY="110.0" />
       <TextField fx:id="newTime" layoutX="140.0" layoutY="210.0" />
       <TextField fx:id="newFile" layoutX="140.0" layoutY="260.0" />
-      <Button layoutX="300.0" layoutY="260.0" mnemonicParsing="false" text="Choose..." />
+      <Button layoutX="300.0" layoutY="260.0" mnemonicParsing="false" onAction="#chooseFile" text="Choose..." />
       <Button fx:id="newCancel" layoutX="390.0" layoutY="310.0" mnemonicParsing="false" onAction="#newCancelButton" text="Cancel" />
       <Button fx:id="newSave" layoutX="300.0" layoutY="310.0" mnemonicParsing="false" onAction="#newSaveButton" text="Save" />
       <Label fx:id="newSong" layoutX="140.0" layoutY="15.0" text="Song...">

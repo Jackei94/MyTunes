@@ -7,7 +7,6 @@ package gui;
  */
 import be.Playlist;
 import be.Songs;
-import bll.BLLException;
 import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DalException;
@@ -332,42 +331,7 @@ public class AppController implements Initializable
         }
 
     }
- @FXML
-    private void plDeleteButton(ActionEvent event) throws DalException, BLLException
-    {
-        boolean isSongOnPlaylist = false;
-        Playlist selectedPlaylist
-                = playlists.getSelectionModel().getSelectedItem();
-//        for (int i = 0; i < songModel.getPlaylists().size(); i++) {
-//            if(!songModel.getPlaylists().get(i).getSongList().isEmpty()) {
-//                for (int j = 0; j < songModel.getPlaylists().get(i).getSongList().size(); j++) {
-//                    if(selectedSong.getId() == songModel.getPlaylists().get(i).getSongList().get(j).getId()) {
-//                    isSongOnPlaylist = true;
-//                }
-//              }
-//          }
-//        }
-        if (isSongOnPlaylist == true)
-        {
-            Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
-            warningAlert.showAndWait();
 
-        } else
-        {
-            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
-            deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedPlaylist.getPlName()+ "?");
-            deleteAlert.showAndWait();
-            if (deleteAlert.getResult() == ButtonType.YES)
-            {
-                playlistModel.deletePlaylist(selectedPlaylist);
-            } else
-            {
-                deleteAlert.close();
-            }
-
-        }
-
-    }
     @FXML
     private void newPlaylist(ActionEvent event) throws IOException
     {

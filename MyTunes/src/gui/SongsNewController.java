@@ -9,6 +9,7 @@ import be.Songs;
 import bll.BLLException;
 import dal.DalException;
 import gui.model.SongModel;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.net.URL;
@@ -22,7 +23,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 /**
  * FXML Controller class
@@ -126,5 +133,28 @@ public class SongsNewController implements Initializable
     {
         this.songModel = model;
     }
-    
+    @FXML
+    public void chooseFile(ActionEvent event) {
+        
+        try {
+            FileChooser fileChooser = new FileChooser();
+            Window stage = null;
+            File file = fileChooser.showOpenDialog(stage);
+            
+            AudioFile f;
+            f = AudioFileIO.read(file);
+            Tag t = f.getTagOrCreateAndSetDefault();
+            newTime.setText(Integer.toString(f.getAudioHeader().getTrackLength()));
+            newArtist.setText(t.getFirst(FieldKey.ARTIST));
+            
+            newTitle.setText(t.getFirst(FieldKey.TITLE));
+            //txtGenre.setText(t.getFirst(FieldKey.GENRE));
+            newFile.setText(file.getPath());
+            f.commit();      
+             
+        } catch (Exception e) {
+
+        }
+
+    }
 }
