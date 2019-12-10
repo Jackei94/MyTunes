@@ -25,7 +25,7 @@ public class PlaylistModel
     private static PlaylistModel instance;
     private ObservableList<Playlist> allPlaylists;
     private ObservableList<Playlist> selectedPlaylist;
-    private ObservableList<Songs> allSongsOnPlaylist;
+    private ObservableList<Playlist> allSongsOnPlaylist;
     private PlaylistManager playlistManager;
     
     public PlaylistModel() throws DalException, Exception
@@ -101,9 +101,20 @@ public class PlaylistModel
         return newOrEditProperty().get();
     }
     
-    public ObservableList<Songs> getAllSongsOnPlaylist()
+    public void addSongToPlaylist(Playlist playlist, Songs songs)
     {
-        return allSongsOnPlaylist;
+       playlistManager.addSongToPlaylist(playlist, songs);
+       allSongsOnPlaylist.add(playlist);
     }
     
+    public ObservableList<Playlist> getAllSongsFromPlaylist()
+    {
+       return allSongsOnPlaylist;
+    }
+       public void loadSongsOnPlaylist() throws DalException
+    {
+        allSongsOnPlaylist.clear();
+        allSongsOnPlaylist.addAll(playlistManager.getAllSongsFromPlaylist());
+    }
+
 }

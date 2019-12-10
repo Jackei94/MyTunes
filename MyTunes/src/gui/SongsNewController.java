@@ -87,7 +87,11 @@ public class SongsNewController implements Initializable
         newSong.textProperty().unbind();
         this.songModel = songModel;
         newSong.textProperty().bind(songModel.newOrEditProperty());
+        
+        
     }
+    
+    
 
     @FXML
     private void newCancelButton(ActionEvent event)

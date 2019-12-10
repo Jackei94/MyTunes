@@ -32,6 +32,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SortEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -52,6 +53,7 @@ public class AppController implements Initializable
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private final ObservableList<Songs> searchedSongs;
+    
     private final SongManager songManager;
     private final PlaylistManager playlistManager;
     private final ToggleButton playButton = new ToggleButton("Play");
@@ -82,7 +84,9 @@ public class AppController implements Initializable
     @FXML
     private Button playlistsDelete;
     @FXML
-    private ListView<Songs> playlistSongs;
+    private TableView<Playlist> songPL;
+    @FXML
+    private TableColumn<Playlist, String> playlistSongs;
     @FXML
     private Button playlistSongsUp;
     @FXML
@@ -111,6 +115,7 @@ public class AppController implements Initializable
     private TableColumn<Songs, Integer> time;
     @FXML
     private Slider volumeSlider;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -136,19 +141,21 @@ public class AppController implements Initializable
         playlists.setItems(playlistModel.getAllPlaylists());
         // Sets all cells to their values for playlist table
         playlistsName.setCellValueFactory(new PropertyValueFactory("plName"));
-
-        playlistSongs.setItems(playlistModel.getAllSongsOnPlaylist());
-        playlistSongs.setCellFactory(new PropertyValueFactory("songId"));
-
+        
+        songPL.setItems(playlistModel.getAllSongsFromPlaylist());
+        playlistSongs.setCellValueFactory(new PropertyValueFactory("songName"));
+        
         currentVolume = .05;
         volumeSlider.setValue(currentVolume);
-
+        
         try
         {
             // Loads all songs
             songModel.loadSongs();
             // Loads all playlists
-            playlistModel.loadPlaylists();
+
+           playlistModel.loadPlaylists();
+           playlistModel.loadSongsOnPlaylist();
         } catch (DalException ex)
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,6 +258,7 @@ public class AppController implements Initializable
             playButton.setText("Play");
             songModel.setVolume(volumeSlider);
         }
+
     }
 
     @FXML
@@ -292,6 +300,7 @@ public class AppController implements Initializable
         this.playlistModel = playlistModel;
         playlistModel.setNewOrEdit("New Playlist");
 
+
         Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
 
         Scene root2 = new Scene(loader);
@@ -301,7 +310,25 @@ public class AppController implements Initializable
         stage.setScene(root2);
         stage.show();
     }
-
+/*
+    * Adds the selected song to the selected playlist
+    */
+    @FXML
+    private void addToPlaylist(ActionEvent event) {
+        Songs selectedSong = allSongs.getSelectionModel().getSelectedItem();
+        Playlist getSelectedPlaylist = playlists.getSelectionModel().getSelectedItem();
+        getSelectedPlaylist.getSongList().add(selectedSong);
+        playlistManager.addSongToPlaylist(getSelectedPlaylist, selectedSong);
+       // playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
+       
+    }
+    
+    
+//    @FXML
+//    private void getPlaylistSong(MouseEvent event) {
+//        
+//        playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
+//    }
     @FXML
     private void editPlaylist(ActionEvent event) throws IOException
     {
@@ -364,4 +391,13 @@ public class AppController implements Initializable
 
     }
 
+//   @FXML
+//   private void getPlaylistSong(SortEvent<C> event)
+//   {
+//   }
+
+   @FXML
+   private void getPlaylistSong(MouseEvent event)
+   {
+   }
 }
