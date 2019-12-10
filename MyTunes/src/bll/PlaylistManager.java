@@ -6,6 +6,7 @@
 package bll;
 
 import be.Playlist;
+import be.Songs;
 import dal.DalException;
 import dal.IPlaylistDao;
 import dal.database.PlaylistDBDAO;
@@ -37,5 +38,13 @@ public class PlaylistManager
     
     public void editPlaylist(Playlist playlist) throws DalException {
         playlistDao.updatePlaylist(playlist);
+    }
+    public void addSongToPlaylist(Playlist playlist, Songs songs)
+    {
+       playlistDao.addSongToPlaylist(playlist, songs);
+    }
+    public List<Playlist> getAllSongsFromPlaylist() throws DalException
+    {
+       return playlistDao.getAllSongsFromPlaylist();
     }
 }

@@ -6,6 +6,7 @@
 package gui.model;
 
 import be.Playlist;
+import be.Songs;
 import bll.BLLException;
 import bll.PlaylistManager;
 import dal.DalException;
@@ -22,6 +23,8 @@ public class PlaylistModel
     private static PlaylistModel instance;
     private ObservableList<Playlist> allPlaylists;
     private ObservableList<Playlist> selectedPlaylist;
+    private ObservableList<Playlist> allSongsOnPlaylist;
+    
     private PlaylistManager playlistManager;
     
     public PlaylistModel() throws DalException, Exception
@@ -29,6 +32,7 @@ public class PlaylistModel
         this.playlistManager = new PlaylistManager();
         allPlaylists = FXCollections.observableArrayList();
         selectedPlaylist = FXCollections.observableArrayList();
+        allSongsOnPlaylist = FXCollections.observableArrayList();
     }
     
     public static PlaylistModel getInstance() throws IOException, Exception
@@ -77,5 +81,21 @@ public class PlaylistModel
     {
         playlistManager.deletePlaylist(playlist);
         allPlaylists.remove(selectedPlaylist);
+    }
+    
+    public void addSongToPlaylist(Playlist playlist, Songs songs)
+    {
+       playlistManager.addSongToPlaylist(playlist, songs);
+       allSongsOnPlaylist.add(playlist);
+    }
+    
+    public ObservableList<Playlist> getAllSongsFromPlaylist()
+    {
+       return allSongsOnPlaylist;
+    }
+       public void loadSongsOnPlaylist() throws DalException
+    {
+        allSongsOnPlaylist.clear();
+        allSongsOnPlaylist.addAll(playlistManager.getAllSongsFromPlaylist());
     }
 }

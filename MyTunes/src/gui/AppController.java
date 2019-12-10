@@ -31,6 +31,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SortEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -50,6 +51,7 @@ public class AppController implements Initializable
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private final ObservableList<Songs> searchedSongs;
+    
     private final SongManager songManager;
     private final PlaylistManager playlistManager;
     private final ToggleButton playButton = new ToggleButton("Play");
@@ -80,7 +82,9 @@ public class AppController implements Initializable
     @FXML
     private Button playlistsDelete;
     @FXML
-    private ListView<?> playlistSongs;
+   private TableView<Playlist> songPL;
+    @FXML
+    private TableColumn<Playlist, String> playlistSongs;
     @FXML
     private Button playlistSongsUp;
     @FXML
@@ -109,6 +113,7 @@ public class AppController implements Initializable
     private TableColumn<Songs, Integer> time;
     @FXML
     private Slider volumeSlider;
+   
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -134,16 +139,20 @@ public class AppController implements Initializable
         playlists.setItems(playlistModel.getAllPlaylists());
         // Sets all cells to their values for playlist table
         playlistsName.setCellValueFactory(new PropertyValueFactory("plName"));
-
+        
+        songPL.setItems(playlistModel.getAllSongsFromPlaylist());
+        playlistSongs.setCellValueFactory(new PropertyValueFactory("songName"));
+        
         currentVolume = .05;
         volumeSlider.setValue(currentVolume);
-
+        
         try
         {
             // Loads all songs
             songModel.loadSongs();
             // Loads all playlists
            playlistModel.loadPlaylists();
+           playlistModel.loadSongsOnPlaylist();
         } catch (DalException ex)
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
@@ -242,24 +251,7 @@ public class AppController implements Initializable
             songModel.setVolume(volumeSlider);
         }
 
-        //        Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
-        //        Duration length = null;
-        //        if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
-        //            if (length == null){
-        //            mediaPlay.play();
-        //            
-        //            }
-        //            
-        //        }
-        //        else if (playButton.getText().equals("Play")) {
-        //            
-        //            mediaPlay.play();
-        //            playButton.setText("Pause");
-        //        } else if (!playButton.getText().equals("Play")) {
-        //            mediaPlay.pause();
-        //            length = mediaPlay.getCurrentTime();
-        //            playButton.setText("Play");
-        //        }
+       
     }
 
     @FXML
@@ -301,15 +293,7 @@ public class AppController implements Initializable
         boolean isSongOnPlaylist = false;
         Songs selectedSong
                 = allSongs.getSelectionModel().getSelectedItem();
-//        for (int i = 0; i < songModel.getPlaylists().size(); i++) {
-//            if(!songModel.getPlaylists().get(i).getSongList().isEmpty()) {
-//                for (int j = 0; j < songModel.getPlaylists().get(i).getSongList().size(); j++) {
-//                    if(selectedSong.getId() == songModel.getPlaylists().get(i).getSongList().get(j).getId()) {
-//                    isSongOnPlaylist = true;
-//                }
-//              }
-//          }
-//        }
+
         if (isSongOnPlaylist == true)
         {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
@@ -331,7 +315,25 @@ public class AppController implements Initializable
         }
 
     }
-
+/*
+    * Adds the selected song to the selected playlist
+    */
+    @FXML
+    private void addToPlaylist(ActionEvent event) {
+        Songs selectedSong = allSongs.getSelectionModel().getSelectedItem();
+        Playlist getSelectedPlaylist = playlists.getSelectionModel().getSelectedItem();
+        getSelectedPlaylist.getSongList().add(selectedSong);
+        playlistManager.addSongToPlaylist(getSelectedPlaylist, selectedSong);
+       // playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
+       
+    }
+    
+    
+//    @FXML
+//    private void getPlaylistSong(MouseEvent event) {
+//        
+//        playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
+//    }
     @FXML
     private void newPlaylist(ActionEvent event) throws IOException
     {
@@ -344,4 +346,14 @@ public class AppController implements Initializable
         stage.setScene(root2);
         stage.show();
     }
+
+//   @FXML
+//   private void getPlaylistSong(SortEvent<C> event)
+//   {
+//   }
+
+   @FXML
+   private void getPlaylistSong(MouseEvent event)
+   {
+   }
 }

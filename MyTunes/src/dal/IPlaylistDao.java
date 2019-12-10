@@ -22,4 +22,8 @@ public interface IPlaylistDao
     void updatePlaylist(Playlist playlist) throws DalException;
     
     List<Playlist> getAllPlaylists() throws DalException;
+    
+    void addSongToPlaylist(Playlist playlist, Songs songs);
+    
+    List<Playlist> getAllSongsFromPlaylist()throws DalException;;
 }

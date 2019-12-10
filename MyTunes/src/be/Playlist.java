@@ -5,6 +5,9 @@
  */
 package be;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Tramm
@@ -15,7 +18,13 @@ public class Playlist
     public int plSongs;
     public int plTime;
     private int id;
+private final List<Songs> songsList;
 
+   public Playlist()
+   {
+    
+        this.songsList = new ArrayList();
+   }
     public String getPlName()
     {
         return plName;
@@ -54,5 +63,11 @@ public class Playlist
     public void setId(int id)
     {
         this.id = id;
+    }
+    /*
+     * returns songList
+     */
+    public List<Songs> getSongList() {
+        return songsList;
     }
 }

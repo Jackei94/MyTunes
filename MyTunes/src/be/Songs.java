@@ -80,7 +80,7 @@ public class Songs
     
     public String toString()
     {
-        return "Song{" + "songName=" + songName + ", songArtist=" + songArtist + ", category=" + category + ", filePath=" + filePath + ", time=" + time + ", id=" + id + '}';
+        return songName;
     }
     
     

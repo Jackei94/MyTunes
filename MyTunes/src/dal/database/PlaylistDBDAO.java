@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package dal.database;
-
+import be.Songs;
 import be.Playlist;
 import dal.DalException;
 import dal.IPlaylistDao;
@@ -31,6 +31,8 @@ public class PlaylistDBDAO implements IPlaylistDao
     {
         dbCon = new DatabaseConnector();    
     }
+    private final List<Playlist> allPlaylists = new ArrayList();
+    private final List<Playlist> allSongsOnPlaylist = new ArrayList();
     
     public List<Playlist> getAllPlaylists() throws DalException
     {
@@ -97,6 +99,70 @@ public class PlaylistDBDAO implements IPlaylistDao
             ex.printStackTrace();
         }
     }
+    
+    /*
+    * Adds a song into the relations table "playlistSongs" in the database.
+    */
+    public void addSongToPlaylist(Playlist playlist, Songs songs) {
+        
+                try (Connection con = dbCon.getConnection()) {
+           String sql = "INSERT INTO PlaylistSongs"
+                   + "(songId, playlistsId)"
+                   + "VALUES (?,?)";
+           PreparedStatement pstmt
+                   = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+           pstmt.setInt(1, songs.getId());
+           pstmt.setInt(2, playlist.getId());
+           
+           int affected = pstmt.executeUpdate();
+           if (affected<1)
+                   throw new SQLException("Can't save song to playlist");
+                 
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(PlaylistDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+        
+    }
+    
+    /*
+    * Selects all tables in the database and compare id's. 
+    */
+    public List<Playlist> getAllSongsFromPlaylist() {
+       ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();     
+       
+        try (Connection con = dbCon.getConnection()) {
+            PreparedStatement pstmt
+                    = con.prepareStatement("SELECT * FROM PlaylistSongs, Songs, Playlist WHERE PlaylistSongs.songId = Songs.id AND PlaylistSongs.playlistsId = Playlist.id;");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Playlist playlist = new Playlist();
+                Songs song = new Songs();
+                playlist.setId(rs.getInt("playlistsId"));
+                song.setId(rs.getInt("id"));
+                song.setSongName(rs.getString("songName"));
+                song.setTime(rs.getInt("time"));
+                song.setFilePath(rs.getString("filePath"));
+                
+                // Goes through the list of all playlists and if a id on the list is the same as one in database
+                // it will get the song list from that specific playlist and add the song that is on the database.
+                for (int i = 0; i < allSongsOnPlaylist.size(); i++) { 
+                    if(allSongsOnPlaylist.get(i).getId() == playlist.getId() ) 
+                    {
+                    allSongsOnPlaylist.get(i).getSongList().add(song);
+                    }
+                }
+                
+                    
+            }
+              
+            } catch (SQLException ex) {
+            Logger.getLogger(PlaylistDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return allSongsOnPlaylist;
+        }
     
     @Override
     public void updatePlaylist(Playlist playlist)
