@@ -53,7 +53,7 @@
             <VBox prefHeight="400.0" prefWidth="200.0">
                <children>
                   <Label text="Playlists" />
-                  <TableView fx:id="playlists" prefHeight="400.0" prefWidth="200.0">
+                  <TableView fx:id="playlists" onMouseReleased="#songsOnPlaylists" prefHeight="400.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="playlistsName" maxWidth="1.7976931348623157E308" prefWidth="98.0" text="Name" />
                       <TableColumn fx:id="playlistsSongs" maxWidth="1.7976931348623157E308" prefWidth="50.0" text="Songs" />
@@ -67,12 +67,12 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="playlistsEdit" mnemonicParsing="false" text="Edit...">
+                        <Button fx:id="playlistsEdit" mnemonicParsing="false" onAction="#editPlaylist" text="Edit...">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="playlistsDelete" mnemonicParsing="false" text="Delete" />
+                        <Button fx:id="playlistsDelete" mnemonicParsing="false" onAction="#deletePlaylist" text="Delete" />
                      </children>
                      <VBox.margin>
                         <Insets top="10.0" />

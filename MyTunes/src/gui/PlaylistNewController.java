@@ -9,8 +9,6 @@ import be.Playlist;
 import bll.BLLException;
 import dal.DalException;
 import gui.model.PlaylistModel;
-import gui.model.SongModel;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -19,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -38,6 +37,8 @@ public class PlaylistNewController implements Initializable
    
    
    private PlaylistModel playlistModel;
+    @FXML
+    private Label newPlaylist;
    /**
     * Initializes the controller class.
     */
@@ -56,6 +57,10 @@ public class PlaylistNewController implements Initializable
         {
             txtPL.setText(playlistModel.getSelectedPlaylist().get(0).getPlName());
         }
+        
+        newPlaylist.textProperty().unbind();
+        this.playlistModel = playlistModel;
+        newPlaylist.textProperty().bind(playlistModel.newOrEditProperty());
     }
     
     @FXML

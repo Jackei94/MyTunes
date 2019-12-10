@@ -6,10 +6,13 @@
 package gui.model;
 
 import be.Playlist;
+import be.Songs;
 import bll.BLLException;
 import bll.PlaylistManager;
 import dal.DalException;
 import java.io.IOException;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,6 +25,7 @@ public class PlaylistModel
     private static PlaylistModel instance;
     private ObservableList<Playlist> allPlaylists;
     private ObservableList<Playlist> selectedPlaylist;
+    private ObservableList<Songs> allSongsOnPlaylist;
     private PlaylistManager playlistManager;
     
     public PlaylistModel() throws DalException, Exception
@@ -29,6 +33,7 @@ public class PlaylistModel
         this.playlistManager = new PlaylistManager();
         allPlaylists = FXCollections.observableArrayList();
         selectedPlaylist = FXCollections.observableArrayList();
+        allSongsOnPlaylist = FXCollections.observableArrayList();
     }
     
     public static PlaylistModel getInstance() throws IOException, Exception
@@ -78,4 +83,27 @@ public class PlaylistModel
         playlistManager.deletePlaylist(playlist);
         allPlaylists.remove(selectedPlaylist);
     }
+    
+    private StringProperty newOrEdit = new SimpleStringProperty();
+
+    public StringProperty newOrEditProperty()
+    {
+        return newOrEdit;
+    }
+    
+    public void setNewOrEdit(String newOrEdit)
+    {
+        newOrEditProperty().set(newOrEdit);
+    }
+
+    public final String getNewOrEdit()
+    {
+        return newOrEditProperty().get();
+    }
+    
+    public ObservableList<Songs> getAllSongsOnPlaylist()
+    {
+        return allSongsOnPlaylist;
+    }
+    
 }

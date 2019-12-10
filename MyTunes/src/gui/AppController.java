@@ -7,6 +7,7 @@ package gui;
  */
 import be.Playlist;
 import be.Songs;
+import bll.BLLException;
 import bll.PlaylistManager;
 import bll.SongManager;
 import dal.DalException;
@@ -47,6 +48,7 @@ import javafx.stage.Stage;
  */
 public class AppController implements Initializable
 {
+
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private final ObservableList<Songs> searchedSongs;
@@ -80,7 +82,7 @@ public class AppController implements Initializable
     @FXML
     private Button playlistsDelete;
     @FXML
-    private ListView<?> playlistSongs;
+    private ListView<Songs> playlistSongs;
     @FXML
     private Button playlistSongsUp;
     @FXML
@@ -135,6 +137,9 @@ public class AppController implements Initializable
         // Sets all cells to their values for playlist table
         playlistsName.setCellValueFactory(new PropertyValueFactory("plName"));
 
+        playlistSongs.setItems(playlistModel.getAllSongsOnPlaylist());
+        playlistSongs.setCellFactory(new PropertyValueFactory("songId"));
+
         currentVolume = .05;
         volumeSlider.setValue(currentVolume);
 
@@ -143,7 +148,7 @@ public class AppController implements Initializable
             // Loads all songs
             songModel.loadSongs();
             // Loads all playlists
-           playlistModel.loadPlaylists();
+            playlistModel.loadPlaylists();
         } catch (DalException ex)
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
@@ -159,23 +164,9 @@ public class AppController implements Initializable
     }
 
     @FXML
-    private void exitApp(ActionEvent event) throws IOException
+    private void volumeSlide(MouseEvent event)
     {
-
-        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
-        deleteAlert.setContentText("Er du helt sikker på det? ");
-        deleteAlert.showAndWait();
-        if (deleteAlert.getResult() == ButtonType.YES)
-        {
-            // get a handle to the stage
-            Stage stage = (Stage) close.getScene().getWindow();
-            // do what you have to do
-            stage.close();
-
-        } else
-        {
-            deleteAlert.close();
-        }
+        songModel.setVolume(volumeSlider);
     }
 
     @FXML
@@ -195,12 +186,6 @@ public class AppController implements Initializable
     }
 
     @FXML
-    private void volumeSlide(MouseEvent event)
-    {
-        songModel.setVolume(volumeSlider);
-    }
-
-    @FXML
     private void songsEditButton(ActionEvent event) throws IOException
     {
         this.songModel = songModel;
@@ -213,10 +198,35 @@ public class AppController implements Initializable
         SongsNewController controller = fxmlLoader.getController();
         controller.setModel(songModel);
         Stage stage = new Stage();
-        songModel.getSelectedSong().clear();
 
         stage.setScene(new Scene(root1));
         stage.show();
+    }
+
+    @FXML
+    private void songDeleteButton(ActionEvent event) throws DalException
+    {
+        boolean isSongOnPlaylist = false;
+        Songs selectedSong
+                = allSongs.getSelectionModel().getSelectedItem();
+        if (isSongOnPlaylist == true)
+        {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
+            warningAlert.showAndWait();
+
+        } else
+        {
+            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
+            deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
+            deleteAlert.showAndWait();
+            if (deleteAlert.getResult() == ButtonType.YES)
+            {
+                songModel.deleteSong(selectedSong);
+            } else
+            {
+                deleteAlert.close();
+            }
+        }
     }
 
     Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
@@ -241,25 +251,6 @@ public class AppController implements Initializable
             playButton.setText("Play");
             songModel.setVolume(volumeSlider);
         }
-
-        //        Songs songPlaying = allSongs.getSelectionModel().getSelectedItem();
-        //        Duration length = null;
-        //        if (songPlaying == allSongs.getSelectionModel().getSelectedItem()){
-        //            if (length == null){
-        //            mediaPlay.play();
-        //            
-        //            }
-        //            
-        //        }
-        //        else if (playButton.getText().equals("Play")) {
-        //            
-        //            mediaPlay.play();
-        //            playButton.setText("Pause");
-        //        } else if (!playButton.getText().equals("Play")) {
-        //            mediaPlay.pause();
-        //            length = mediaPlay.getCurrentTime();
-        //            playButton.setText("Play");
-        //        }
     }
 
     @FXML
@@ -296,45 +287,11 @@ public class AppController implements Initializable
     }
 
     @FXML
-    private void songDeleteButton(ActionEvent event) throws DalException
-    {
-        boolean isSongOnPlaylist = false;
-        Songs selectedSong
-                = allSongs.getSelectionModel().getSelectedItem();
-//        for (int i = 0; i < songModel.getPlaylists().size(); i++) {
-//            if(!songModel.getPlaylists().get(i).getSongList().isEmpty()) {
-//                for (int j = 0; j < songModel.getPlaylists().get(i).getSongList().size(); j++) {
-//                    if(selectedSong.getId() == songModel.getPlaylists().get(i).getSongList().get(j).getId()) {
-//                    isSongOnPlaylist = true;
-//                }
-//              }
-//          }
-//        }
-        if (isSongOnPlaylist == true)
-        {
-            Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
-            warningAlert.showAndWait();
-
-        } else
-        {
-            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
-            deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
-            deleteAlert.showAndWait();
-            if (deleteAlert.getResult() == ButtonType.YES)
-            {
-                songModel.deleteSong(selectedSong);
-            } else
-            {
-                deleteAlert.close();
-            }
-
-        }
-
-    }
-
-    @FXML
     private void newPlaylist(ActionEvent event) throws IOException
     {
+        this.playlistModel = playlistModel;
+        playlistModel.setNewOrEdit("New Playlist");
+
         Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
 
         Scene root2 = new Scene(loader);
@@ -344,4 +301,67 @@ public class AppController implements Initializable
         stage.setScene(root2);
         stage.show();
     }
+
+    @FXML
+    private void editPlaylist(ActionEvent event) throws IOException
+    {
+        this.playlistModel = playlistModel;
+        playlistModel.setNewOrEdit("Edit Playlist");
+
+        Playlist playlist = playlists.getSelectionModel().getSelectedItem();
+        playlistModel.addSelectedPlaylist(playlist);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PlaylistNew.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        PlaylistNewController controller = fxmlLoader.getController();
+        controller.setModel(playlistModel);
+        Stage stage = new Stage();
+
+        stage.setScene(new Scene(root1));
+        stage.show();
+    }
+
+    @FXML
+    private void deletePlaylist(ActionEvent event) throws DalException, BLLException
+    {
+        Playlist selectedPlaylist = playlists.getSelectionModel().getSelectedItem();
+
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
+        deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedPlaylist.getPlName() + "?");
+        deleteAlert.showAndWait();
+        if (deleteAlert.getResult() == ButtonType.YES)
+        {
+            playlistModel.deletePlaylist(selectedPlaylist);
+        } else
+        {
+            deleteAlert.close();
+        }
+        playlistModel.loadPlaylists();
+    }
+
+    @FXML
+    private void exitApp(ActionEvent event) throws IOException
+    {
+
+        Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
+        deleteAlert.setContentText("Er du helt sikker på det? ");
+        deleteAlert.showAndWait();
+        if (deleteAlert.getResult() == ButtonType.YES)
+        {
+            // get a handle to the stage
+            Stage stage = (Stage) close.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+
+        } else
+        {
+            deleteAlert.close();
+        }
+    }
+
+    @FXML
+    private void songsOnPlaylists(MouseEvent event)
+    {
+
+    }
+
 }

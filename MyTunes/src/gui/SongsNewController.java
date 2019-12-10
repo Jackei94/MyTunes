@@ -38,7 +38,7 @@ import org.jaudiotagger.tag.Tag;
  */
 public class SongsNewController implements Initializable
 {
-    ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit");
+    ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit", "Unz Unz");
 
     @FXML
     private Button newCancel;
@@ -136,7 +136,8 @@ public class SongsNewController implements Initializable
     @FXML
     public void chooseFile(ActionEvent event) {
         
-        try {
+        try 
+        {
             FileChooser fileChooser = new FileChooser();
             Window stage = null;
             File file = fileChooser.showOpenDialog(stage);
@@ -150,7 +151,7 @@ public class SongsNewController implements Initializable
             newTitle.setText(t.getFirst(FieldKey.TITLE));
             //txtGenre.setText(t.getFirst(FieldKey.GENRE));
             newFile.setText(file.getPath());
-            f.commit();      
+            f.commit();
              
         } catch (Exception e) {
 
