@@ -147,7 +147,7 @@ public class SongModel
      */
     public void PlaySong(Songs songPlay)
     {
-        songManager.PlaySong(songPlay);
+        songManager.playSong(songPlay);
     }
 
     /**
@@ -187,7 +187,7 @@ public class SongModel
      */
     public void PauseSong(Songs songPlay)
     {
-        songManager.PauseSong(songPlay);
+        songManager.pauseSong(songPlay);
     }
 
     /**

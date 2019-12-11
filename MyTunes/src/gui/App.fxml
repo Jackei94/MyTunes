@@ -52,7 +52,7 @@
             <VBox prefHeight="400.0" prefWidth="200.0">
                <children>
                   <Label text="Playlists" />
-                  <TableView fx:id="playlists" onMouseClicked="#getPlaylistSong" onSort="#getPlaylistSong" prefHeight="400.0" prefWidth="200.0">
+                  <TableView fx:id="playlists" prefHeight="400.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="playlistsName" maxWidth="1.7976931348623157E308" prefWidth="98.0" text="Name" />
                       <TableColumn fx:id="playlistsSongs" maxWidth="1.7976931348623157E308" prefWidth="50.0" text="Songs" />

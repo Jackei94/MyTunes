@@ -98,7 +98,7 @@ public class SongManager
      *
      * @param songPlay
      */
-    public void PlaySong(Songs songPlay)
+    public void playSong(Songs songPlay)
     {
         songPlay = songPlay;
         String filePlay = new File(songPlay.getFilePath()).toURI().toString();
@@ -112,7 +112,7 @@ public class SongManager
      *
      * @param songPlay
      */
-    public void PauseSong(Songs songPlay)
+    public void pauseSong(Songs songPlay)
     {
         mediaPlay.pause();
     }
