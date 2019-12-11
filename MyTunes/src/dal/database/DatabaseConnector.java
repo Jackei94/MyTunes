@@ -11,14 +11,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
+
 /**
  *
- * @author Tramm
+ * @author Jacob, Jonas Charlie & René
  */
 public class DatabaseConnector
 {
+
     private SQLServerDataSource dataSource;
-    
+
+    /**
+     * Constructor for our DatabaseConnector.
+     *
+     * @throws IOException
+     */
     public DatabaseConnector() throws IOException
     {
         Properties props = new Properties();
@@ -26,10 +33,16 @@ public class DatabaseConnector
         dataSource = new SQLServerDataSource();
         dataSource.setDatabaseName(props.getProperty("database"));
         dataSource.setUser(props.getProperty("user"));
-        dataSource.setPassword(props.getProperty("password"));        
+        dataSource.setPassword(props.getProperty("password"));
         dataSource.setServerName(props.getProperty("server"));
     }
-    
+
+    /**
+     * Gets connection to our database and returns it.
+     *
+     * @return
+     * @throws SQLServerException
+     */
     public Connection getConnection() throws SQLServerException
     {
         return dataSource.getConnection();

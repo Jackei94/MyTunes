@@ -10,15 +10,20 @@ import java.util.List;
 
 /**
  *
- * @author Jacob
+ * @author Jacob, Jonas Charlie & René
+ */
+
+/*
+ * Interface for our SongManager 
  */
 public interface ISongsDao
 {
+
     void createSongs(Songs songs) throws DalException;
-    
+
     void deleteSongs(Songs songs) throws DalException;
 
     void updateSongs(Songs songs) throws DalException;
-    
+
     List<Songs> getAllSongs() throws DalException;
 }

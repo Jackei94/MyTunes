@@ -7,11 +7,13 @@ package dal;
 
 /**
  *
- * @author pgn
+ * @author Jacob, Jonas Charlie & René
  */
+/**
+ * Catches DalException and keeps the program running.
+ */
+
 public class DalException extends Exception
 {
-    
-    
-    
+
 }

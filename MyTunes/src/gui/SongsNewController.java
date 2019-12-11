@@ -34,11 +34,13 @@ import org.jaudiotagger.tag.Tag;
 /**
  * FXML Controller class
  *
- * @author Jacob
+ * @author Jacob, Jonas Charlie & René
  */
 public class SongsNewController implements Initializable
 {
+
     ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit", "Unz Unz");
+    private SongModel songModel;
 
     @FXML
     private Button newCancel;
@@ -56,43 +58,45 @@ public class SongsNewController implements Initializable
     private TextField newFile;
     @FXML
     private Label newSong;
-    
-    
-    private SongModel songModel;
-    
+
     /**
-    * Initializes the controller class.
-    */
+     * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         try
         {
             songModel = SongModel.getInstance();
-        } 
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             Logger.getLogger(SongsNewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(!songModel.getSelectedSong().isEmpty()) {
-        newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
-        newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
-        newCategory.setValue(songModel.getSelectedSong().get(0).getCategory());
-        newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
-        newTime.setText(Integer.toString(songModel.getSelectedSong().get(0).getTime()));
+        if (!songModel.getSelectedSong().isEmpty())
+        {
+            newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
+            newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
+            newCategory.setValue(songModel.getSelectedSong().get(0).getCategory());
+            newFile.setText(songModel.getSelectedSong().get(0).getFilePath());
+            newTime.setText(Integer.toString(songModel.getSelectedSong().get(0).getTime()));
         }
         newCategory.setValue("Pop");
         newCategory.setItems(newCategoryList);
-        
+
         newSong.textProperty().unbind();
         this.songModel = songModel;
         newSong.textProperty().bind(songModel.newOrEditProperty());
-        
-        
-    }
-    
-    
 
+    }
+
+    /**
+     * Closes the window to create or edit song, and returns to the main view.
+     *
+     * @param event
+     */
     @FXML
     private void newCancelButton(ActionEvent event)
     {
@@ -101,10 +105,18 @@ public class SongsNewController implements Initializable
         stage.close();
     }
 
+    /**
+     * Saves the song either as a new song or by editing the already existing
+     * song.
+     *
+     * @param event
+     * @throws DalException
+     * @throws BLLException
+     */
     @FXML
     private void newSaveButton(ActionEvent event) throws DalException, BLLException
     {
-        if(!songModel.getSelectedSong().isEmpty())
+        if (!songModel.getSelectedSong().isEmpty())
         {
             Songs songs = new Songs();
             songs.setSongName(newTitle.getText());
@@ -115,8 +127,7 @@ public class SongsNewController implements Initializable
             songs.setId(songModel.getSelectedSong().get(0).getId());
             songModel.edit(songs);
             songModel.getSelectedSong().clear();
-        }
-        else
+        } else
         {
             Songs songs = new Songs();
             songs.setId(-1);
@@ -132,34 +143,48 @@ public class SongsNewController implements Initializable
         Stage stage = (Stage) newSave.getScene().getWindow();
         stage.close();
     }
-    
-    public void setModel(SongModel model) 
-    {
-        this.songModel = model;
-    }
+
+    /**
+     * Opens GUI to select navigate to a song, and adds the metadata to the
+     * fields when creating a new song.
+     *
+     * @param event
+     */
     @FXML
-    public void chooseFile(ActionEvent event) {
-        
-        try 
+    public void chooseFile(ActionEvent event)
+    {
+
+        try
         {
             FileChooser fileChooser = new FileChooser();
             Window stage = null;
             File file = fileChooser.showOpenDialog(stage);
-            
+
             AudioFile f;
             f = AudioFileIO.read(file);
             Tag t = f.getTagOrCreateAndSetDefault();
             newTime.setText(Integer.toString(f.getAudioHeader().getTrackLength()));
             newArtist.setText(t.getFirst(FieldKey.ARTIST));
-            
+
             newTitle.setText(t.getFirst(FieldKey.TITLE));
             //txtGenre.setText(t.getFirst(FieldKey.GENRE));
             newFile.setText(file.getPath());
             f.commit();
-             
-        } catch (Exception e) {
+
+        } catch (Exception e)
+        {
 
         }
 
+    }
+
+    /**
+     * Sets the songModel to this.
+     *
+     * @param model
+     */
+    public void setModel(SongModel model)
+    {
+        this.songModel = model;
     }
 }

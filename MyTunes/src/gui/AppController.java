@@ -30,9 +30,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.control.SortEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -45,7 +43,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author Jacob
+ * @author Jacob, Jonas Charlie & René
  */
 public class AppController implements Initializable
 {
@@ -53,11 +51,12 @@ public class AppController implements Initializable
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private final ObservableList<Songs> searchedSongs;
-    
     private final SongManager songManager;
     private final PlaylistManager playlistManager;
     private final ToggleButton playButton = new ToggleButton("Play");
     private double currentVolume;
+    Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
+    Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
 
     @FXML
     private TextField txtSearch;
@@ -115,8 +114,13 @@ public class AppController implements Initializable
     private TableColumn<Songs, Integer> time;
     @FXML
     private Slider volumeSlider;
-   
 
+    /**
+     * Initializer for AppController.
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -141,21 +145,21 @@ public class AppController implements Initializable
         playlists.setItems(playlistModel.getAllPlaylists());
         // Sets all cells to their values for playlist table
         playlistsName.setCellValueFactory(new PropertyValueFactory("plName"));
-        
+
         songPL.setItems(playlistModel.getAllSongsFromPlaylist());
         playlistSongs.setCellValueFactory(new PropertyValueFactory("songName"));
-        
+
         currentVolume = .05;
         volumeSlider.setValue(currentVolume);
-        
+
         try
         {
             // Loads all songs
             songModel.loadSongs();
             // Loads all playlists
 
-           playlistModel.loadPlaylists();
-           playlistModel.loadSongsOnPlaylist();
+            playlistModel.loadPlaylists();
+            playlistModel.loadSongsOnPlaylist();
         } catch (DalException ex)
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,6 +167,11 @@ public class AppController implements Initializable
 
     }
 
+    /**
+     * Contructor for AppController.
+     *
+     * @throws Exception
+     */
     public AppController() throws Exception
     {
         this.searchedSongs = FXCollections.observableArrayList();
@@ -170,12 +179,23 @@ public class AppController implements Initializable
         this.playlistManager = new PlaylistManager();
     }
 
+    /**
+     * Sets the volume based on the placement of the volumeslider.
+     *
+     * @param event
+     */
     @FXML
     private void volumeSlide(MouseEvent event)
     {
         songModel.setVolume(volumeSlider);
     }
 
+    /**
+     * Opens the window to create a new song.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException
     {
@@ -192,6 +212,12 @@ public class AppController implements Initializable
         stage.show();
     }
 
+    /**
+     * Opens the windows to edit the selected song.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void songsEditButton(ActionEvent event) throws IOException
     {
@@ -210,6 +236,12 @@ public class AppController implements Initializable
         stage.show();
     }
 
+    /**
+     * Deletes the selected item.
+     *
+     * @param event
+     * @throws DalException
+     */
     @FXML
     private void songDeleteButton(ActionEvent event) throws DalException
     {
@@ -236,9 +268,10 @@ public class AppController implements Initializable
         }
     }
 
-    Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
-    Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
-
+    /**
+     * Plays the selected song, and changes the state of the button to be able
+     * to pause the song.
+     */
     @FXML
     public void mousePressedPlay()
     {
@@ -261,6 +294,11 @@ public class AppController implements Initializable
 
     }
 
+    /**
+     * Plays the next song based on current song playing
+     *
+     * @throws DalException
+     */
     @FXML
     public void mousePressedNext() throws DalException
     {
@@ -272,6 +310,9 @@ public class AppController implements Initializable
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
+    /**
+     * Plays the previous song based on current song playing
+     */
     @FXML
     public void mousePressedPrevious()
     {
@@ -283,6 +324,9 @@ public class AppController implements Initializable
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
+    /**
+     * Search songs based on typed values, and updates the view.
+     */
     @FXML
     private void searchSong()
     {
@@ -294,12 +338,17 @@ public class AppController implements Initializable
         });
     }
 
+    /**
+     * Opens the window to create a new Playlist.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void newPlaylist(ActionEvent event) throws IOException
     {
         this.playlistModel = playlistModel;
         playlistModel.setNewOrEdit("New Playlist");
-
 
         Parent loader = FXMLLoader.load(getClass().getResource("PlaylistNew.fxml"));
 
@@ -310,25 +359,29 @@ public class AppController implements Initializable
         stage.setScene(root2);
         stage.show();
     }
-/*
-    * Adds the selected song to the selected playlist
-    */
+
+    /**
+     * Adds the selected song to the selected playlist
+     *
+     * @param event
+     */
     @FXML
-    private void addToPlaylist(ActionEvent event) {
+    private void addToPlaylist(ActionEvent event)
+    {
         Songs selectedSong = allSongs.getSelectionModel().getSelectedItem();
         Playlist getSelectedPlaylist = playlists.getSelectionModel().getSelectedItem();
         getSelectedPlaylist.getSongList().add(selectedSong);
         playlistManager.addSongToPlaylist(getSelectedPlaylist, selectedSong);
-       // playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
-       
+        // playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
+
     }
-    
-    
-//    @FXML
-//    private void getPlaylistSong(MouseEvent event) {
-//        
-//        playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
-//    }
+
+    /**
+     * Opens the windows to edit the selected playlist.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void editPlaylist(ActionEvent event) throws IOException
     {
@@ -347,6 +400,13 @@ public class AppController implements Initializable
         stage.show();
     }
 
+    /**
+     * Deletes the selected playlist.
+     *
+     * @param event
+     * @throws DalException
+     * @throws BLLException
+     */
     @FXML
     private void deletePlaylist(ActionEvent event) throws DalException, BLLException
     {
@@ -365,6 +425,12 @@ public class AppController implements Initializable
         playlistModel.loadPlaylists();
     }
 
+    /**
+     * Closes the app.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void exitApp(ActionEvent event) throws IOException
     {
@@ -384,20 +450,4 @@ public class AppController implements Initializable
             deleteAlert.close();
         }
     }
-
-    @FXML
-    private void songsOnPlaylists(MouseEvent event)
-    {
-
-    }
-
-//   @FXML
-//   private void getPlaylistSong(SortEvent<C> event)
-//   {
-//   }
-
-   @FXML
-   private void getPlaylistSong(MouseEvent event)
-   {
-   }
 }

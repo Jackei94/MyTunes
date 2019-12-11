@@ -7,13 +7,19 @@ package bll;
 
 /**
  *
- * @author Jacob
+ * @author Jacob, Jonas Charlie & René
  */
 public class BLLException extends Exception
 {
+
+    /**
+     * Catches BLLExeptions and keeps the program running.
+     *
+     * @param message
+     */
     public BLLException(String message)
     {
         super(message);
     }
-    
+
 }

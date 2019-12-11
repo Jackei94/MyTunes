@@ -14,37 +14,88 @@ import java.util.List;
 
 /**
  *
- * @author Tramm
+ * @author Jacob, Jonas Charlie & René
  */
 public class PlaylistManager
 {
+
     private IPlaylistDao playlistDao;
-    
-    public PlaylistManager() throws Exception {
+
+    /**
+     * Constructor for PlaylistManager.
+     *
+     * @throws Exception
+     */
+    public PlaylistManager() throws Exception
+    {
         playlistDao = (IPlaylistDao) new PlaylistDBDAO();
     }
 
-    public List<Playlist> getAllPlaylists() throws DalException {
+    /**
+     * Returns all playlists
+     *
+     * @return
+     * @throws DalException
+     */
+    public List<Playlist> getAllPlaylists() throws DalException
+    {
         return playlistDao.getAllPlaylists();
     }
-    
-    public void createPlaylist(Playlist playlist) throws BLLException, DalException {
+
+    /**
+     * Sends information to create new playlist.
+     *
+     * @param playlist
+     * @throws BLLException
+     * @throws DalException
+     */
+    public void createPlaylist(Playlist playlist) throws BLLException, DalException
+    {
         playlistDao.createPlaylist(playlist);
     }
-    
-    public void deletePlaylist(Playlist playlist) throws BLLException, DalException {
+
+    /**
+     * Deletes the specified playlist.
+     *
+     * @param playlist
+     * @throws BLLException
+     * @throws DalException
+     */
+    public void deletePlaylist(Playlist playlist) throws BLLException, DalException
+    {
         playlistDao.deletePlaylist(playlist);
     }
-    
-    public void editPlaylist(Playlist playlist) throws DalException {
+
+    /**
+     * Edits the specified playlist
+     *
+     * @param playlist
+     * @throws DalException
+     */
+    public void editPlaylist(Playlist playlist) throws DalException
+    {
         playlistDao.updatePlaylist(playlist);
     }
+
+    /**
+     * Add songs to playlists.
+     *
+     * @param playlist
+     * @param songs
+     */
     public void addSongToPlaylist(Playlist playlist, Songs songs)
     {
-       playlistDao.addSongToPlaylist(playlist, songs);
+        playlistDao.addSongToPlaylist(playlist, songs);
     }
+
+    /**
+     * Gets all songs from the playlists and returns it.
+     *
+     * @return
+     * @throws DalException
+     */
     public List<Playlist> getAllSongsFromPlaylist() throws DalException
     {
-       return playlistDao.getAllSongsFromPlaylist();
+        return playlistDao.getAllSongsFromPlaylist();
     }
 }

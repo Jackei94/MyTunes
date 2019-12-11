@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package dal.database;
+
 import be.Songs;
 import be.Playlist;
 import dal.DalException;
@@ -21,21 +22,29 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Tramm
+ * @author Jacob, Jonas Charlie & René
  */
 public class PlaylistDBDAO implements IPlaylistDao
 {
 
     private DatabaseConnector dbCon;
 
+    /**
+     * Constructor for PlaylistDBDAO.
+     *
+     * @throws IOException
+     */
     public PlaylistDBDAO() throws IOException
     {
         dbCon = new DatabaseConnector();
     }
 
-    private final List<Playlist> allPlaylists = new ArrayList();
-    private final List<Playlist> allSongsOnPlaylist = new ArrayList();
-    
+    /**
+     * Gets all Playlists in our database and returns it.
+     *
+     * @return
+     * @throws DalException
+     */
     public List<Playlist> getAllPlaylists() throws DalException
     {
         ArrayList<Playlist> allPlaylists = new ArrayList<>();
@@ -62,6 +71,12 @@ public class PlaylistDBDAO implements IPlaylistDao
         }
     }
 
+    /**
+     * Creates a new Playlist in our database with the values.
+     *
+     * @param playlist
+     * @throws DalException
+     */
     public void createPlaylist(Playlist playlist) throws DalException
     {
         try ( Connection con = dbCon.getConnection())
@@ -90,6 +105,12 @@ public class PlaylistDBDAO implements IPlaylistDao
         }
     }
 
+    /**
+     * Deletes the Playlist with the matching Id.
+     *
+     * @param selectedPlaylist
+     * @throws DalException
+     */
     public void deletePlaylist(Playlist selectedPlaylist) throws DalException
     {
         try ( Connection con = dbCon.getConnection())
@@ -104,45 +125,55 @@ public class PlaylistDBDAO implements IPlaylistDao
             ex.printStackTrace();
         }
     }
-    
-    /*
-    * Adds a song into the relations table "playlistSongs" in the database.
-    */
-    public void addSongToPlaylist(Playlist playlist, Songs songs) {
-        
-                try (Connection con = dbCon.getConnection()) {
-           String sql = "INSERT INTO PlaylistSongs"
-                   + "(songId, playlistsId)"
-                   + "VALUES (?,?)";
-           PreparedStatement pstmt
-                   = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-           pstmt.setInt(1, songs.getId());
-           pstmt.setInt(2, playlist.getId());
-           
-           int affected = pstmt.executeUpdate();
-           if (affected<1)
-                   throw new SQLException("Can't save song to playlist");
-                 
-        }
-        
-        catch (SQLException ex) {
+
+    /**
+     * Adds a song into the into the table "playlistSongs" in the database.
+     *
+     * @param playlist
+     * @param songs
+     */
+    public void addSongToPlaylist(Playlist playlist, Songs songs)
+    {
+
+        try ( Connection con = dbCon.getConnection())
+        {
+            String sql = "INSERT INTO PlaylistSongs"
+                    + "(songId, playlistsId)"
+                    + "VALUES (?,?)";
+            PreparedStatement pstmt
+                    = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, songs.getId());
+            pstmt.setInt(2, playlist.getId());
+
+            int affected = pstmt.executeUpdate();
+            if (affected < 1)
+            {
+                throw new SQLException("Can't save song to playlist");
+            }
+
+        } catch (SQLException ex)
+        {
             Logger.getLogger(PlaylistDBDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
-        
+
     }
-    
-    /*
-    * Selects all tables in the database and compare id's. 
-    */
-    public List<Playlist> getAllSongsFromPlaylist() {
-       ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();     
-       
-        try (Connection con = dbCon.getConnection()) {
+
+    /**
+     * Gets all tables the databases, compares the id's and returns it.
+     *
+     * @return
+     */
+    public List<Playlist> getAllSongsFromPlaylist()
+    {
+        ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();
+
+        try ( Connection con = dbCon.getConnection())
+        {
             PreparedStatement pstmt
                     = con.prepareStatement("SELECT * FROM PlaylistSongs, Songs, Playlist WHERE PlaylistSongs.songId = Songs.id AND PlaylistSongs.playlistsId = Playlist.id;");
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
+            while (rs.next())
+            {
                 Playlist playlist = new Playlist();
                 Songs song = new Songs();
                 playlist.setId(rs.getInt("playlistsId"));
@@ -150,24 +181,30 @@ public class PlaylistDBDAO implements IPlaylistDao
                 song.setSongName(rs.getString("songName"));
                 song.setTime(rs.getInt("time"));
                 song.setFilePath(rs.getString("filePath"));
-                
+
                 // Goes through the list of all playlists and if a id on the list is the same as one in database
                 // it will get the song list from that specific playlist and add the song that is on the database.
-                for (int i = 0; i < allSongsOnPlaylist.size(); i++) { 
-                    if(allSongsOnPlaylist.get(i).getId() == playlist.getId() ) 
+                for (int i = 0; i < allSongsOnPlaylist.size(); i++)
+                {
+                    if (allSongsOnPlaylist.get(i).getId() == playlist.getId())
                     {
-                    allSongsOnPlaylist.get(i).getSongList().add(song);
+                        allSongsOnPlaylist.get(i).getSongList().add(song);
                     }
-                } 
+                }
             }
-              
-            } catch (SQLException ex) {
+
+        } catch (SQLException ex)
+        {
             Logger.getLogger(PlaylistDBDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return allSongsOnPlaylist;
-        }
-    
-    @Override
+        return allSongsOnPlaylist;
+    }
+
+    /**
+     * Updates the Playlist with the specified Id.
+     *
+     * @param playlist
+     */
     public void updatePlaylist(Playlist playlist)
     {
         try ( Connection con = dbCon.getConnection())

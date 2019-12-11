@@ -18,38 +18,42 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  *
- * @author Tramm
+ * @author Jacob, Jonas Charlie & René
  */
 public class SongsDBDAO implements ISongsDao
 {
-    /**
-    * Connects to the database
-    */
+
     private DatabaseConnector dbCon;
-   
-    public SongsDBDAO() throws Exception       
-    { 
+
+    /**
+     * Constructor for PlaylistDBDAO.
+     *
+     * @throws Exception
+     */
+    public SongsDBDAO() throws Exception
+    {
         dbCon = new DatabaseConnector();
     }
-   
+
     /**
-    * 
-    * Fetch all songs from the database 
-    */
+     * Gets all Songs in our database and returns it.
+     *
+     * @return
+     * @throws DalException
+     */
     public List<Songs> getAllSongs() throws DalException
     {
         ArrayList<Songs> allSongs = new ArrayList<>();
-        try (Connection con = dbCon.getConnection())
+        try ( Connection con = dbCon.getConnection())
         { // prepare statement
             String sql = "SELECT * FROM Songs;";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
-            { 
-      // Add all to a list
+            {
+                // Add all to a list
                 Songs song = new Songs();
                 song.setId(rs.getInt("id"));
                 song.setSongName(rs.getString("songName"));
@@ -57,22 +61,29 @@ public class SongsDBDAO implements ISongsDao
                 song.setCategory(rs.getString("category"));
                 song.setFilePath(rs.getString("filePath"));
                 song.setTime(rs.getInt("time"));
-                
+
                 allSongs.add(song);
             }
             //Return
             return allSongs;
         } catch (SQLException ex)
-        {   Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new DalException(); 
+        {
+            Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DalException();
         }
     }
-    // Creates a new song in database
+
+    /**
+     * Creates a new Song in our database with the values.
+     *
+     * @param songs
+     * @throws DalException
+     */
     public void createSongs(Songs songs) throws DalException
     {
-    // Connects to the database   
-        try (Connection con = dbCon.getConnection())
-        {   
+        // Connects to the database   
+        try ( Connection con = dbCon.getConnection())
+        {
             // SQL code
             String sql = "INSERT INTO Songs (songName, songArtist, time, category, filePath) VALUES (?,?,?,?,?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -82,26 +93,34 @@ public class SongsDBDAO implements ISongsDao
             ps.setInt(3, songs.getTime());
             ps.setString(4, songs.getCategory());
             ps.setString(5, songs.getFilePath());
-            
+
             // Attempts to update the database
             int affectedRows = ps.executeUpdate();
             if (affectedRows < 1)
+            {
                 throw new SQLException("Can't save song");
-            
+            }
+
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next())
             {
-               songs.setId(rs.getInt(1));
+                songs.setId(rs.getInt(1));
             }
-        } 
-        catch (SQLException ex){
+        } catch (SQLException ex)
+        {
             Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
-    
+
+    /**
+     * Deletes the Song with the matching Id.
+     *
+     * @param selectedSong
+     * @throws DalException
+     */
     public void deleteSongs(Songs selectedSong) throws DalException
     {
-        try (Connection con = dbCon.getConnection())
+        try ( Connection con = dbCon.getConnection())
         {
             String sql = "DELETE FROM Songs WHERE id=?;";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -114,10 +133,16 @@ public class SongsDBDAO implements ISongsDao
         }
     }
 
-    @Override
+    /**
+     * Updates the Song with the specified Id.
+     *
+     * @param song
+     * @throws DalException
+     */
     public void updateSongs(Songs song) throws DalException
     {
-        try (Connection con = dbCon.getConnection()) {
+        try ( Connection con = dbCon.getConnection())
+        {
             String sql = "UPDATE Songs SET songName=?, songArtist=?, category=?, filePath=?, time=? WHERE id=?;";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, song.getSongName());
@@ -126,26 +151,16 @@ public class SongsDBDAO implements ISongsDao
             ps.setString(4, song.getFilePath());
             ps.setInt(5, song.getTime());
             ps.setInt(6, song.getId());
-            
+
             int affected = ps.executeUpdate();
-            if (affected<1)
+            if (affected < 1)
+            {
                 throw new SQLException("Can't edit song");
-            
-        } catch (SQLException ex) {
+            }
+
+        } catch (SQLException ex)
+        {
             Logger.getLogger(SongsDBDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void playSong(String filepath) throws DalException
-    {
-    
-    }
-
-   
 }
-
-
-
-
-
-

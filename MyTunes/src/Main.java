@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Jacob
+ * @author Jacob, Jonas Charlie & René
  */
 public class Main extends Application
 {
