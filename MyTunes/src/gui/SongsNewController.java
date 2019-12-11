@@ -39,7 +39,7 @@ import org.jaudiotagger.tag.Tag;
 public class SongsNewController implements Initializable
 {
 
-    ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit", "Unz Unz");
+    private ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit", "Unz Unz");
     private SongModel songModel;
 
     @FXML

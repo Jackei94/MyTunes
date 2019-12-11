@@ -55,8 +55,8 @@ public class AppController implements Initializable
     private final PlaylistManager playlistManager;
     private final ToggleButton playButton = new ToggleButton("Play");
     private double currentVolume;
-    Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
-    Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
+    private Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
+    private Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
 
     @FXML
     private TextField txtSearch;
@@ -124,6 +124,7 @@ public class AppController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        // Gets the instance for songModel and playlistModel
         try
         {
             songModel = SongModel.getInstance();
@@ -132,7 +133,6 @@ public class AppController implements Initializable
         {
             Logger.getLogger(AppController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         // Sets the items on song table
         allSongs.setItems(songModel.getAllSongs());
         // Sets all cells to their values for song table
@@ -140,25 +140,24 @@ public class AppController implements Initializable
         songArtist.setCellValueFactory(new PropertyValueFactory("songArtist"));
         category.setCellValueFactory(new PropertyValueFactory("category"));
         time.setCellValueFactory(new PropertyValueFactory("time"));
-
         // Sets the items on playlist table
         playlists.setItems(playlistModel.getAllPlaylists());
         // Sets all cells to their values for playlist table
         playlistsName.setCellValueFactory(new PropertyValueFactory("plName"));
-
+        // Sets the playlists songs on the song table (Not working atm.)
         songPL.setItems(playlistModel.getAllSongsFromPlaylist());
         playlistSongs.setCellValueFactory(new PropertyValueFactory("songName"));
-
+        // Sets the starting volume and sets the slider to the correct position 
         currentVolume = .05;
         volumeSlider.setValue(currentVolume);
-
+        // Loads songs, playlists and playlistsongs
         try
         {
             // Loads all songs
             songModel.loadSongs();
             // Loads all playlists
-
             playlistModel.loadPlaylists();
+            // Loads all songs on playlist (Not working atm.)
             playlistModel.loadSongsOnPlaylist();
         } catch (DalException ex)
         {
@@ -223,9 +222,10 @@ public class AppController implements Initializable
     {
         this.songModel = songModel;
         songModel.setNewOrEdit("Edit Song");
-
+        // Sets the selected song to be edited
         Songs songs = allSongs.getSelectionModel().getSelectedItem();
         songModel.addSelectedSong(songs);
+        // Opens the window to make the changes
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SongsNew.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
         SongsNewController controller = fxmlLoader.getController();
@@ -245,9 +245,9 @@ public class AppController implements Initializable
     @FXML
     private void songDeleteButton(ActionEvent event) throws DalException
     {
+        // Checks if the song is on playlist before deleting it
         boolean isSongOnPlaylist = false;
-        Songs selectedSong
-                = allSongs.getSelectionModel().getSelectedItem();
+        Songs selectedSong = allSongs.getSelectionModel().getSelectedItem();
         if (isSongOnPlaylist == true)
         {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING, "The song is part of a playlist. Remove the song from the playlist first");
@@ -275,6 +275,7 @@ public class AppController implements Initializable
     @FXML
     public void mousePressedPlay()
     {
+        // Sets the curent song playing
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
         if (playButton.getText().equals("Play"))
         {
@@ -302,11 +303,17 @@ public class AppController implements Initializable
     @FXML
     public void mousePressedNext() throws DalException
     {
+        // Stops the mediaplayer
         songModel.getMediaPlayer().stop();
+        // Gets the next song on the list
         allSongs.getSelectionModel().selectNext();
+        // Sets the new song as the song to be played
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
+        // Plays the new song
         songModel.PlaySong(songPlay);
+        // Sets the button to Pause
         playButton.setText("Pause");
+        // Displays the current song that is playing
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
@@ -316,11 +323,17 @@ public class AppController implements Initializable
     @FXML
     public void mousePressedPrevious()
     {
+        // Stops the mediaplayer
         songModel.getMediaPlayer().stop();
+        // Gets the previous song on the list
         allSongs.getSelectionModel().selectPrevious();
+        // Sets the new song as the song to be played
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
+        // Plays the new song
         songModel.PlaySong(songPlay);
+        // Sets the button to Pause
         playButton.setText("Pause");
+        // Displays the current song that is playing
         currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
     }
 
@@ -368,11 +381,13 @@ public class AppController implements Initializable
     @FXML
     private void addToPlaylist(ActionEvent event)
     {
+        // Sets the selectedSong
         Songs selectedSong = allSongs.getSelectionModel().getSelectedItem();
+        // Sets the playlist which the song should be added to
         Playlist getSelectedPlaylist = playlists.getSelectionModel().getSelectedItem();
+        // Adds the song to the playlist
         getSelectedPlaylist.getSongList().add(selectedSong);
         playlistManager.addSongToPlaylist(getSelectedPlaylist, selectedSong);
-        // playlistSongs.setItems(FXCollections.observableArrayList(playlists.getSelectionModel().getSelectedItem().getSongList()));
 
     }
 
@@ -387,7 +402,6 @@ public class AppController implements Initializable
     {
         this.playlistModel = playlistModel;
         playlistModel.setNewOrEdit("Edit Playlist");
-
         Playlist playlist = playlists.getSelectionModel().getSelectedItem();
         playlistModel.addSelectedPlaylist(playlist);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PlaylistNew.fxml"));
