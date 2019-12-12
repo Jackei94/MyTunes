@@ -31,6 +31,7 @@ public class PlaylistNewController implements Initializable
 
     private PlaylistModel playlistModel;
 
+    // FXML list.
     @FXML
     private TextField txtPL;
     @FXML
@@ -93,6 +94,7 @@ public class PlaylistNewController implements Initializable
     {
         if (!playlistModel.getSelectedPlaylist().isEmpty())
         {
+            // Edits. - Edit who the fuck is Edit!
             Playlist playlist = new Playlist();
             playlist.setPlName(txtPL.getText());
             playlist.setId(playlistModel.getSelectedPlaylist().get(0).getId());
@@ -100,6 +102,7 @@ public class PlaylistNewController implements Initializable
             playlistModel.getSelectedPlaylist().clear();
         } else
         {
+            // New.
             Playlist playlist = new Playlist();
             playlist.setId(-1);
             playlist.setPlName(txtPL.getText());

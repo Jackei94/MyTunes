@@ -176,11 +176,8 @@ public class SongsNewController implements Initializable
 
         } catch (Exception e)
         {
-
         }
-
     }
-
     /**
      * Sets the songModel to this.
      *
