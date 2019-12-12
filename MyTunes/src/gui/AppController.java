@@ -8,8 +8,6 @@ package gui;
 import be.Playlist;
 import be.Songs;
 import bll.BLLException;
-import bll.PlaylistManager;
-import bll.SongManager;
 import dal.DalException;
 import gui.model.PlaylistModel;
 import gui.model.SongModel;
@@ -51,8 +49,6 @@ public class AppController implements Initializable
     private SongModel songModel;
     private PlaylistModel playlistModel;
     private final ObservableList<Songs> searchedSongs;
-    private final SongManager songManager;
-    private final PlaylistManager playlistManager;
     private final ToggleButton playButton = new ToggleButton("Play");
     private double currentVolume;
     private Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
@@ -176,8 +172,6 @@ public class AppController implements Initializable
     public AppController() throws Exception
     {
         this.searchedSongs = FXCollections.observableArrayList();
-        this.songManager = new SongManager();
-        this.playlistManager = new PlaylistManager();
     }
 
     /**
@@ -360,7 +354,7 @@ public class AppController implements Initializable
         txtSearch.textProperty().addListener((observable, oldValue, newValue)
                 ->
         {
-            searchedSongs.setAll(songManager.search(songModel.getAllSongs(), newValue));
+            searchedSongs.setAll(songModel.search(songModel.getAllSongs(), newValue));
             allSongs.setItems(searchedSongs);
         });
     }
@@ -401,7 +395,7 @@ public class AppController implements Initializable
         Playlist getSelectedPlaylist = playlists.getSelectionModel().getSelectedItem();
         // Adds the song to the playlist
         getSelectedPlaylist.getSongList().add(selectedSong);
-        playlistManager.addSongToPlaylist(getSelectedPlaylist, selectedSong);
+        playlistModel.addSongToPlaylist(getSelectedPlaylist, selectedSong);
 
     }
 

@@ -10,6 +10,8 @@ import bll.BLLException;
 import bll.SongManager;
 import dal.DalException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -138,6 +140,11 @@ public class SongModel
     {
         songManager.deleteSong(selectedSong);
         allSongs.remove(selectedSong);
+    }
+    
+    public ArrayList<Songs> search(List<Songs> songs, String searchQuery)
+    {
+        return songManager.search(songs, searchQuery);
     }
 
     /**

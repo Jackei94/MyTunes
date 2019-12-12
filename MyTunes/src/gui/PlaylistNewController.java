@@ -109,6 +109,7 @@ public class PlaylistNewController implements Initializable
 
             playlistModel.createPlaylist(playlist);
         }
+        
         playlistModel.loadPlaylists();
         Stage stage = (Stage) saveBtnPL.getScene().getWindow();
         stage.close();
