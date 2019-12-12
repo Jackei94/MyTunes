@@ -32,7 +32,7 @@ public class PlaylistManager
     }
 
     /**
-     * Returns all playlists
+     * Gets all playlists and returns them.
      *
      * @return
      * @throws DalException
@@ -67,7 +67,7 @@ public class PlaylistManager
     }
 
     /**
-     * Edits the specified playlist
+     * Edits the specified playlist.
      *
      * @param playlist
      * @throws DalException
@@ -89,7 +89,7 @@ public class PlaylistManager
     }
 
     /**
-     * Gets all songs from the playlists and returns it.
+     * Gets all songs from the playlists and returns them.
      *
      * @return
      * @throws DalException

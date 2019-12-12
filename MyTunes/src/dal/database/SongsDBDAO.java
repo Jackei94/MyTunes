@@ -26,6 +26,7 @@ public class SongsDBDAO implements ISongsDao
 {
 
     private DatabaseConnector dbCon;
+    private final ArrayList<Songs> allSongs = new ArrayList<>();
 
     /**
      * Constructor for PlaylistDBDAO.
@@ -45,11 +46,14 @@ public class SongsDBDAO implements ISongsDao
      */
     public List<Songs> getAllSongs() throws DalException
     {
-        ArrayList<Songs> allSongs = new ArrayList<>();
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
-        { // prepare statement
+        {
+            // SQL code. 
             String sql = "SELECT * FROM Songs;";
+            // Create statement.
             Statement statement = con.createStatement();
+            // Attempts to execute the statement.
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
             {
@@ -81,7 +85,7 @@ public class SongsDBDAO implements ISongsDao
      */
     public void createSongs(Songs songs) throws DalException
     {
-        // Connects to the database   
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
             // SQL code
@@ -120,11 +124,15 @@ public class SongsDBDAO implements ISongsDao
      */
     public void deleteSongs(Songs selectedSong) throws DalException
     {
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
+            // SQL code. 
             String sql = "DELETE FROM Songs WHERE id=?;";
+            // Prepared statement. 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, selectedSong.getId());
+            // Attempts to execute the statement.
             ps.execute();
         } catch (SQLException ex)
         {
@@ -141,17 +149,21 @@ public class SongsDBDAO implements ISongsDao
      */
     public void updateSongs(Songs song) throws DalException
     {
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
+            // SQL code. 
             String sql = "UPDATE Songs SET songName=?, songArtist=?, category=?, filePath=?, time=? WHERE id=?;";
+            // Prepared statement
             PreparedStatement ps = con.prepareStatement(sql);
+            // Sets the strings.
             ps.setString(1, song.getSongName());
             ps.setString(2, song.getSongArtist());
             ps.setString(3, song.getCategory());
             ps.setString(4, song.getFilePath());
             ps.setInt(5, song.getTime());
             ps.setInt(6, song.getId());
-
+            // Attempts to execute SQL code.
             int affected = ps.executeUpdate();
             if (affected < 1)
             {

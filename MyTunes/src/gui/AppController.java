@@ -57,7 +57,9 @@ public class AppController implements Initializable
     private double currentVolume;
     private Image playImage = new Image(getClass().getResource("img/pausebutton.png").toExternalForm());
     private Image pauseImage = new Image(getClass().getResource("img/playbutton.png").toExternalForm());
+    private double intVolume = .05;
 
+    // FXML list.
     @FXML
     private TextField txtSearch;
     @FXML
@@ -148,7 +150,7 @@ public class AppController implements Initializable
         songPL.setItems(playlistModel.getAllSongsFromPlaylist());
         playlistSongs.setCellValueFactory(new PropertyValueFactory("songName"));
         // Sets the starting volume and sets the slider to the correct position 
-        currentVolume = .05;
+        currentVolume = intVolume;
         volumeSlider.setValue(currentVolume);
         // Loads songs, playlists and playlistsongs
         try
@@ -198,6 +200,7 @@ public class AppController implements Initializable
     @FXML
     public void songsNewButton(ActionEvent event) throws IOException
     {
+        // Sets the title of the stage.
         this.songModel = songModel;
         songModel.setNewOrEdit("New Song");
 
@@ -220,6 +223,7 @@ public class AppController implements Initializable
     @FXML
     private void songsEditButton(ActionEvent event) throws IOException
     {
+        // Sets the title of the stage.
         this.songModel = songModel;
         songModel.setNewOrEdit("Edit Song");
         // Sets the selected song to be edited
@@ -255,8 +259,9 @@ public class AppController implements Initializable
 
         } else
         {
+            // Popup stage to confirm delete song.
             Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
-            deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedSong.getSongName() + "?");
+            deleteAlert.setContentText("Are you sure you want to delete: " + selectedSong.getSongName() + "?");
             deleteAlert.showAndWait();
             if (deleteAlert.getResult() == ButtonType.YES)
             {
@@ -275,21 +280,30 @@ public class AppController implements Initializable
     @FXML
     public void mousePressedPlay()
     {
-        // Sets the curent song playing
+        // Sets the curent song playing 
         Songs songPlay = allSongs.getSelectionModel().getSelectedItem();
         if (playButton.getText().equals("Play"))
         {
+            // Changes the image of the button.
             playbutton.setImage(playImage);
+            // Plays the selected song.
             songModel.PlaySong(songPlay);
+            // Sets the button state.
             playButton.setText("Pause");
+            // Displays the current song that is playing  
             currentSong.setText(allSongs.getSelectionModel().getSelectedItem().getSongArtist() + " - " + allSongs.getSelectionModel().getSelectedItem().getSongName());
+            // Sets the volume.
             songModel.getMediaPlayer().setVolume(currentVolume);
 
         } else if (playButton.getText().equals("Pause"))
         {
+            // Changes the image of the button.
             playbutton.setImage(pauseImage);
+            // Pauses the selected song.
             songModel.PauseSong(songPlay);
+            // Sets the button state.
             playButton.setText("Play");
+            // Sets the volume.
             songModel.setVolume(volumeSlider);
         }
 
@@ -400,10 +414,13 @@ public class AppController implements Initializable
     @FXML
     private void editPlaylist(ActionEvent event) throws IOException
     {
+        // Sets the title of the stage.
         this.playlistModel = playlistModel;
         playlistModel.setNewOrEdit("Edit Playlist");
+        // Sets the selected song to be edited
         Playlist playlist = playlists.getSelectionModel().getSelectedItem();
         playlistModel.addSelectedPlaylist(playlist);
+        // Opens the window to make the changes
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("PlaylistNew.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
         PlaylistNewController controller = fxmlLoader.getController();
@@ -424,16 +441,19 @@ public class AppController implements Initializable
     @FXML
     private void deletePlaylist(ActionEvent event) throws DalException, BLLException
     {
+        // Select the playlist to be deleted.
         Playlist selectedPlaylist = playlists.getSelectionModel().getSelectedItem();
-
+        // Popup stage with confirmation.
         Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Delete", ButtonType.YES, ButtonType.NO);
-        deleteAlert.setContentText("Vil du VIRKELIG slette? " + selectedPlaylist.getPlName() + "?");
+        deleteAlert.setContentText("Are you sure you want to delete: " + selectedPlaylist.getPlName() + "?");
         deleteAlert.showAndWait();
         if (deleteAlert.getResult() == ButtonType.YES)
         {
+            // Deletes the playlist.
             playlistModel.deletePlaylist(selectedPlaylist);
         } else
         {
+            // Cancels the delete and closes the window. 
             deleteAlert.close();
         }
         playlistModel.loadPlaylists();
@@ -448,19 +468,21 @@ public class AppController implements Initializable
     @FXML
     private void exitApp(ActionEvent event) throws IOException
     {
-
+        // Popup stage with confirmation on exit of app.
         Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION, "Confirm Exit", ButtonType.YES, ButtonType.NO);
-        deleteAlert.setContentText("Er du helt sikker på det? ");
+        deleteAlert.setContentText("Are you sure? ");
+        // Close App.
         deleteAlert.showAndWait();
         if (deleteAlert.getResult() == ButtonType.YES)
         {
-            // get a handle to the stage
+            // Get a handle to the stage
             Stage stage = (Stage) close.getScene().getWindow();
-            // do what you have to do
+            // Do what you have to do - Outrageous!
             stage.close();
 
         } else
         {
+            // Close the popup stage.
             deleteAlert.close();
         }
     }

@@ -28,6 +28,8 @@ public class PlaylistDBDAO implements IPlaylistDao
 {
 
     private DatabaseConnector dbCon;
+    private final ArrayList<Playlist> allPlaylists = new ArrayList<>();
+    private final ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();
 
     /**
      * Constructor for PlaylistDBDAO.
@@ -47,22 +49,25 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public List<Playlist> getAllPlaylists() throws DalException
     {
-        ArrayList<Playlist> allPlaylists = new ArrayList<>();
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
-        { // prepare statement
+        {
+            // SQL code.
             String sql = "SELECT * FROM Playlist;";
+            // Prepared statement.
             Statement statement = con.createStatement();
+            // Attempts to execute the database Query.
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())
             {
-                // Add all to a list
+                // Add all to a list.
                 Playlist playlist = new Playlist();
                 playlist.setId(rs.getInt("id"));
                 playlist.setPlName(rs.getString("plName"));
 
                 allPlaylists.add(playlist);
             }
-            //Return
+            //Return.
             return allPlaylists;
         } catch (SQLException ex)
         {
@@ -79,15 +84,16 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public void createPlaylist(Playlist playlist) throws DalException
     {
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
-            // SQL code
+            // SQL code.
             String sql = "INSERT INTO Playlist (plName) VALUES (?);";
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            // Sets the Strings
+            // Sets the Strings.
             ps.setString(1, playlist.getPlName());
 
-            // Attempts to update the database
+            // Attempts to update the database.
             int affectedRows = ps.executeUpdate();
             if (affectedRows < 1)
             {
@@ -113,11 +119,16 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public void deletePlaylist(Playlist selectedPlaylist) throws DalException
     {
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
+            // SQL code
             String sql = "DELETE FROM Playlist WHERE id=?;";
+            // Prepared statement.
             PreparedStatement ps = con.prepareStatement(sql);
+            // Sets the string
             ps.setInt(1, selectedPlaylist.getId());
+            // Attempts to execute the sql Code.
             ps.execute();
         } catch (SQLException ex)
         {
@@ -134,17 +145,20 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public void addSongToPlaylist(Playlist playlist, Songs songs)
     {
-
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
+            // SQL code.
             String sql = "INSERT INTO PlaylistSongs"
                     + "(songId, playlistsId)"
                     + "VALUES (?,?)";
+            // Prepared statement.
             PreparedStatement pstmt
                     = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            // Sets the strings.
             pstmt.setInt(1, songs.getId());
             pstmt.setInt(2, playlist.getId());
-
+            // Attempts to execute the SQL code.
             int affected = pstmt.executeUpdate();
             if (affected < 1)
             {
@@ -165,15 +179,16 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public List<Playlist> getAllSongsFromPlaylist()
     {
-        ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();
-
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
-            PreparedStatement pstmt
-                    = con.prepareStatement("SELECT * FROM PlaylistSongs, Songs, Playlist WHERE PlaylistSongs.songId = Songs.id AND PlaylistSongs.playlistsId = Playlist.id;");
+            // Prepared statement and SQL code.
+            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM PlaylistSongs, Songs, Playlist WHERE PlaylistSongs.songId = Songs.id AND PlaylistSongs.playlistsId = Playlist.id;");
+
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
             {
+                // Sets the strings.
                 Playlist playlist = new Playlist();
                 Songs song = new Songs();
                 playlist.setId(rs.getInt("playlistsId"));
@@ -197,6 +212,7 @@ public class PlaylistDBDAO implements IPlaylistDao
         {
             Logger.getLogger(PlaylistDBDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        //Return.
         return allSongsOnPlaylist;
     }
 
@@ -207,13 +223,17 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public void updatePlaylist(Playlist playlist)
     {
+        // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
+            // SQL code.
             String sql = "UPDATE Playlist SET plName=? WHERE id=?;";
+            // Prepared statement.
             PreparedStatement ps = con.prepareStatement(sql);
+            // Sets the strings.
             ps.setString(1, playlist.getPlName());
             ps.setInt(2, playlist.getId());
-
+            // Attempts to execute the SQL code.
             int affected = ps.executeUpdate();
             if (affected < 1)
             {

@@ -29,7 +29,7 @@ public class SongManager
     private ISongsDao songsDao;
 
     /**
-     * Constructor for SongManager
+     * Constructor for SongManager.
      *
      * @throws Exception
      */
@@ -39,7 +39,7 @@ public class SongManager
     }
 
     /**
-     * Gets all songs and returns it.
+     * Gets all songs and returns them.
      *
      * @return
      * @throws DalException
@@ -50,7 +50,7 @@ public class SongManager
     }
 
     /**
-     * Sends information to create new song.
+     * Sends information to create a new song.
      *
      * @param songs
      * @throws BLLException
@@ -62,7 +62,7 @@ public class SongManager
     }
 
     /**
-     * Sends information to edit/update the specified song
+     * Sends information to edit/update the specified song.
      *
      * @param songs
      * @throws DalException
@@ -73,7 +73,7 @@ public class SongManager
     }
 
     /**
-     * Deletes the specified song
+     * Deletes the specified song.
      *
      * @param selectedSongs
      * @throws DalException
@@ -94,7 +94,7 @@ public class SongManager
     }
 
     /**
-     * Method to play song based in its filepath.
+     * Method to play song based on its filepath.
      *
      * @param songPlay
      */
@@ -159,7 +159,6 @@ public class SongManager
             {
                 result.add(song);
             }
-
         }
         return result;
     }

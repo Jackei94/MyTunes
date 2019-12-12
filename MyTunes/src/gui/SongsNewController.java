@@ -42,6 +42,7 @@ public class SongsNewController implements Initializable
     private ObservableList<String> newCategoryList = FXCollections.observableArrayList("Pop", "Rock", "Dubstep", "Slow", "Some shit", "Unz Unz");
     private SongModel songModel;
 
+    // FXML list.
     @FXML
     private Button newCancel;
     @FXML
@@ -77,6 +78,7 @@ public class SongsNewController implements Initializable
         }
         if (!songModel.getSelectedSong().isEmpty())
         {
+            // Sets the data in fields if a song is selected.
             newTitle.setText(songModel.getSelectedSong().get(0).getSongName());
             newArtist.setText(songModel.getSelectedSong().get(0).getSongArtist());
             newCategory.setValue(songModel.getSelectedSong().get(0).getCategory());
@@ -118,6 +120,7 @@ public class SongsNewController implements Initializable
     {
         if (!songModel.getSelectedSong().isEmpty())
         {
+            //Edits.
             Songs songs = new Songs();
             songs.setSongName(newTitle.getText());
             songs.setSongArtist(newArtist.getText());
@@ -129,6 +132,7 @@ public class SongsNewController implements Initializable
             songModel.getSelectedSong().clear();
         } else
         {
+            // New.
             Songs songs = new Songs();
             songs.setId(-1);
             songs.setSongName(newTitle.getText());
@@ -139,6 +143,7 @@ public class SongsNewController implements Initializable
 
             songModel.createSongs(songs);
         }
+        // Close the stage.
         songModel.loadSongs();
         Stage stage = (Stage) newSave.getScene().getWindow();
         stage.close();
@@ -165,9 +170,7 @@ public class SongsNewController implements Initializable
             Tag t = f.getTagOrCreateAndSetDefault();
             newTime.setText(Integer.toString(f.getAudioHeader().getTrackLength()));
             newArtist.setText(t.getFirst(FieldKey.ARTIST));
-
             newTitle.setText(t.getFirst(FieldKey.TITLE));
-            //txtGenre.setText(t.getFirst(FieldKey.GENRE));
             newFile.setText(file.getPath());
             f.commit();
 
