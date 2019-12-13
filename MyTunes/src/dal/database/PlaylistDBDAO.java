@@ -28,8 +28,6 @@ public class PlaylistDBDAO implements IPlaylistDao
 {
 
     private DatabaseConnector dbCon;
-    private final ArrayList<Playlist> allPlaylists = new ArrayList<>();
-    private final ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();
 
     /**
      * Constructor for PlaylistDBDAO.
@@ -49,6 +47,7 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public List<Playlist> getAllPlaylists() throws DalException
     {
+        ArrayList<Playlist> allPlaylists = new ArrayList<>();
         // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {
@@ -179,6 +178,7 @@ public class PlaylistDBDAO implements IPlaylistDao
      */
     public List<Playlist> getAllSongsFromPlaylist()
     {
+        ArrayList<Playlist> allSongsOnPlaylist = new ArrayList<>();
         // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {

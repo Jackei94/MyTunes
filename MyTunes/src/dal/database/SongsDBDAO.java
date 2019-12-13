@@ -26,7 +26,6 @@ public class SongsDBDAO implements ISongsDao
 {
 
     private DatabaseConnector dbCon;
-    private final ArrayList<Songs> allSongs = new ArrayList<>();
 
     /**
      * Constructor for PlaylistDBDAO.
@@ -46,6 +45,7 @@ public class SongsDBDAO implements ISongsDao
      */
     public List<Songs> getAllSongs() throws DalException
     {
+        ArrayList<Songs> allSongs = new ArrayList<>();
         // Attempts to connect to the database.
         try ( Connection con = dbCon.getConnection())
         {

@@ -135,9 +135,9 @@ public class PlaylistModel
      * @throws DalException
      * @throws BLLException
      */
-    public void deletePlaylist(Playlist playlist) throws DalException, BLLException
+    public void deletePlaylist(Playlist selectedPlaylist) throws DalException, BLLException
     {
-        playlistManager.deletePlaylist(playlist);
+        playlistManager.deletePlaylist(selectedPlaylist);
         allPlaylists.remove(selectedPlaylist);
     }
 

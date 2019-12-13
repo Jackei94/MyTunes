@@ -450,7 +450,6 @@ public class AppController implements Initializable
             // Cancels the delete and closes the window. 
             deleteAlert.close();
         }
-        playlistModel.loadPlaylists();
     }
 
     /**
